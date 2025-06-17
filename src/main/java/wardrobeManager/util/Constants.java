@@ -1,4 +1,4 @@
-package util;
+package wardrobeManager.util;
 
 public class Constants {
 

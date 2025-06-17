@@ -1,4 +1,4 @@
-package com.closet.start;
+package admin.start;
 
 import org.springframework.web.bind.annotation.*;
 

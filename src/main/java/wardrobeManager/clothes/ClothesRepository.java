@@ -1,4 +1,4 @@
-package com.closet.clothes;
+package wardrobeManager.clothes;
 
 import org.springframework.stereotype.Repository;
 

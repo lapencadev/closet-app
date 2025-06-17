@@ -1,0 +1,74 @@
+@startuml
+
+class Wardrobe {
+    - id: Long
+    - name: String
+    - description: String
+    - owner: String
+}
+
+abstract class Clothes {
+    - id: Long
+    - name: String
+    - color: String
+    - size: String
+    - imageUrl: String
+}
+
+class Shirt {
+    - sleeveLength: String
+    - collarType: String
+    - fitType: String
+}
+
+class Pants {
+    - length: String
+    - waistSize: String
+    - fitType: String
+}
+
+class Skirt {
+    - length: String
+    - style: String
+}
+
+class Dress {
+    - length: String
+    - style: String
+}
+
+abstract class Accessories {
+    - id: Long
+    - name: String
+    - color: String
+    - material: String
+}
+
+class Hat {
+    - type: String
+    - size: String
+}
+
+class Belt {
+    - length: String
+    - buckleType: String
+}
+
+class Scarf {
+    - length: String
+    - pattern: String
+}
+
+Wardrobe "1" -- "*" Clothes
+Wardrobe "1" -- "*" Accessories
+
+Clothes <|-- Shirt
+Clothes <|-- Pants
+Clothes <|-- Skirt
+Clothes <|-- Dress
+
+Accessories <|-- Hat
+Accessories <|-- Belt
+Accessories <|-- Scarf
+
+@enduml
