@@ -1,23 +1,90 @@
 @startuml
+'ENUMS
+enum Season {
+    WINTER
+    SPRING
+    SUMMER
+    AUTUMN
+}
+enum Size {
+    XS
+    S
+    M
+    L
+    XL
+    XXL
+}
+enum Colour {
+    RED
+    GREEN
+    BLUE
+    YELLOW
+    BLACK
+    WHITE
+    PINK
+    PURPLE
+    ORANGE
+    GREY
+}
 
+'-------------------
+' SUPERCLASE PARA AUDITORÍA
+abstract class AuditableEntity {
+    - createdAt: LocalDateTime
+    - updatedAt: LocalDateTime
+    - createdBy: Long
+    - updatedBy: Long
+}
+
+'-------------------
+' USUARIO
+class User {
+    - id: Long
+    - name: String
+    - email: String
+    - password: String
+    - profilePictureUrl: String
+    - isActive: Boolean
+}
+
+'-------------------
+' ARMARIO
 class Wardrobe {
     - id: Long
     - name: String
     - description: String
-    - owner: String
+    - imageUrl: String
+    - location: String
+    - isPublic: Boolean
+    - isFavourite: Boolean
+    - isVisible: Boolean
 }
 
+'-------------------
+' SUPERCLASE ÍTEM
+abstract class Item {
+  - id: Long
+  - name: String
+  - description: String
+  - colour: Colours
+  - season: Season
+  - imageUrl: String
+  - brand: String
+  - size: Size
+  - isFavorite: Boolean
+  - isBorrowed: Boolean
+  - isVisible: Boolean
+}
+
+'-------------------
+' ROPA (hereda de Item)
 abstract class Clothes {
-    - id: Long
-    - name: String
-    - color: String
-    - size: String
-    - imageUrl: String
+    - fabricType: String
+    - pattern: String
 }
 
 class Shirt {
     - sleeveLength: String
-    - collarType: String
     - fitType: String
 }
 
@@ -37,10 +104,26 @@ class Dress {
     - style: String
 }
 
+class Swimsuit {
+    - type: String
+}
+
+class Jumper {
+    - type: String
+}
+
+class Jacket {
+    - type: String
+    - material: String
+}
+
+class Footwear {
+    - type: String
+}
+
+'-------------------
+' ACCESORIOS (hereda de Item)
 abstract class Accessories {
-    - id: Long
-    - name: String
-    - color: String
     - material: String
 }
 
@@ -51,7 +134,6 @@ class Hat {
 
 class Belt {
     - length: String
-    - buckleType: String
 }
 
 class Scarf {
@@ -59,16 +141,58 @@ class Scarf {
     - pattern: String
 }
 
-Wardrobe "1" -- "*" Clothes
-Wardrobe "1" -- "*" Accessories
+class Collar {
+    - type: String
+}
+
+class Earring {
+    - type: String
+}
+class Bag {
+    - type: String
+}
+
+'-------------------
+' PRÉSTAMOS
+class Loan {
+  - id: Long
+  - ownerId: Long
+  - borrowerName: String
+  - dateLoaned: LocalDate
+  - dateReturned: LocalDate {optional}
+  - isReturned: Boolean
+}
+
+Wardrobe "1" -- "0..*" Item
+
+User "1" -- "0..*" Wardrobe
+
+Item <|-- Clothes
+Item <|-- Accessories
+Item "*" -- "1" Wardrobe : belongsTo
+
+Loan "0..*" -- "1" Item : loanedItem
+Loan "0..*" -- "1" User : owner
 
 Clothes <|-- Shirt
 Clothes <|-- Pants
 Clothes <|-- Skirt
 Clothes <|-- Dress
+Clothes <|-- Jacket
+Clothes <|-- Jumper
+Clothes <|-- Swimsuit
+Clothes <|-- Footwear
 
 Accessories <|-- Hat
 Accessories <|-- Belt
 Accessories <|-- Scarf
+Accessories <|-- Collar
+Accessories <|-- Earring
+Accessories <|-- Bag
+
+AuditableEntity <|-- Wardrobe
+AuditableEntity <|-- Item
+AuditableEntity <|-- Loan
+AuditableEntity <|-- User
 
 @enduml
