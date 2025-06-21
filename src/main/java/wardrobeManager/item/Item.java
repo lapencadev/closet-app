@@ -14,7 +14,6 @@ import javax.validation.constraints.NotNull;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "items")

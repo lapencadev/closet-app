@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS pants
+(
+    id BIGINT PRIMARY KEY REFERENCES clothes(id) ON DELETE CASCADE,
+    length VARCHAR(20),
+    fit_type      VARCHAR(50)
+);

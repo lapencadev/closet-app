@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS jackets
+(
+    id BIGINT PRIMARY KEY REFERENCES clothes(id) ON DELETE CASCADE,
+    type      VARCHAR(50),
+    material VARCHAR(50)
+);

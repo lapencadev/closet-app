@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Table(name = "clothes")
 public abstract class Clothes extends Item {

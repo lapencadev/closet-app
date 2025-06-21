@@ -148,6 +148,7 @@ class Collar {
 class Earring {
     - type: String
 }
+
 class Bag {
     - type: String
 }

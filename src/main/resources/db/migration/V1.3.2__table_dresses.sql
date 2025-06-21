@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS dresses
+(
+    id BIGINT PRIMARY KEY REFERENCES clothes(id) ON DELETE CASCADE,
+    length VARCHAR(20),
+    style      VARCHAR(50)
+);
