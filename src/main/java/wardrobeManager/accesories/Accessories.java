@@ -10,8 +10,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "ACCESSORIES")
+@Entity
+@Table(name = "accesories")
 public abstract class Accessories extends Item {
-
     private String material;
 }

@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS accessories
+(
+    id BIGINT NOT NULL PRIMARY KEY,
+    material VARCHAR(50),
+    CONSTRAINT fk_accessories_item FOREIGN KEY (id) REFERENCES items (id) ON DELETE CASCADE
+);

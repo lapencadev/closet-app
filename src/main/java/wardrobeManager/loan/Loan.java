@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Builder
-@Table(name = "LOAN")
+@Table(name = "loans")
 public class Loan extends AuditableEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +24,12 @@ public class Loan extends AuditableEntity {
     private LocalDate dateReturned;
     private Boolean isReturned;
     private String borrowerName;
+
     @ManyToOne
-    @JoinColumn(name="item_id")
+    @JoinColumn(name="item_id", nullable = false)
     private Item loanedItem;
+
     @ManyToOne
-    @JoinColumn(name="owner_id")
+    @JoinColumn(name="owner_id", nullable = false)
     private User owner;
 }
