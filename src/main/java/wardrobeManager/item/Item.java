@@ -1,14 +1,13 @@
 package wardrobeManager.item;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import wardrobeManager.Wardrobe;
 import wardrobeManager.util.AuditableEntity;
 import wardrobeManager.util.Colours;
 import wardrobeManager.util.Season;
 import wardrobeManager.util.Size;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter

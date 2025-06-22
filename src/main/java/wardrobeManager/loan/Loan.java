@@ -1,12 +1,11 @@
 package wardrobeManager.loan;
 
-import User.User;
+import user.User;
 import lombok.*;
 import wardrobeManager.item.Item;
 import wardrobeManager.util.AuditableEntity;
-
-import javax.persistence.*;
 import java.time.LocalDate;
+import jakarta.persistence.*;
 
 @Getter
 @Setter

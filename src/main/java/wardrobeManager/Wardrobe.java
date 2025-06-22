@@ -1,12 +1,12 @@
 package wardrobeManager;
 
-import User.User;
+import user.User;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import wardrobeManager.item.Item;
 import wardrobeManager.util.AuditableEntity;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 

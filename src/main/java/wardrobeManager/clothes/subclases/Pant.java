@@ -1,11 +1,10 @@
 package wardrobeManager.clothes.subclases;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
 import wardrobeManager.clothes.Clothes;
 import wardrobeManager.util.Length;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Getter
 @Setter

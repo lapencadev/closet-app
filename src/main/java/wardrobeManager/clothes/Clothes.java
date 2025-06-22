@@ -1,8 +1,9 @@
 package wardrobeManager.clothes;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
 import wardrobeManager.item.Item;
-import javax.persistence.*;
 
 @Getter
 @Setter
