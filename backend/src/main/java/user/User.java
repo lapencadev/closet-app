@@ -37,9 +37,11 @@ public class User extends AuditableEntity {
     private boolean isActive;
 
     @OneToMany(mappedBy="user", cascade=CascadeType.ALL, orphanRemoval=true)
+    @Builder.Default
     private Set<Wardrobe> wardrobes = new HashSet<>();
 
     @OneToMany(mappedBy="owner", cascade=CascadeType.ALL, orphanRemoval=true)
+    @Builder.Default
     private Set<Loan> loansGiven = new HashSet<>();
 
 }
