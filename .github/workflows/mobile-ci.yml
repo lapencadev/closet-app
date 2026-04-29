@@ -1,16 +1,22 @@
-name: CI
+name: Mobile CI
 
 on:
   push:
     branches: [ main, master ]
+    paths:
+      - 'mobile/**'
+      - '.github/workflows/mobile-ci.yml'
   pull_request:
     branches: [ main, master ]
+    paths:
+      - 'mobile/**'
 
 jobs:
   call-reusable:
     uses: 3592917/ci-templates/.github/workflows/flutter-reusable.yml@main
     with:
       channel: 'stable'
+      working_directory: 'mobile' # Especificamos la carpeta del proyecto Flutter
       run_ios: false
       run_android_build: true
       upload_apk: false
