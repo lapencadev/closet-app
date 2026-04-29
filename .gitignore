@@ -34,3 +34,6 @@ build/
 .vscode/
 
 application-local.properties
+
+# AI Context Files
+agent.md
