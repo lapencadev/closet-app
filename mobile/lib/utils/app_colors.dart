@@ -13,7 +13,7 @@ class AppColors {
   // Text colors
   static const Color textPrimary = Color(0xFF2D3436);
   static const Color textSecondary = Color(0xFF636E72);
-  
+
   // Accent & Status
   static const Color accent = Color(0xFFFF7675);
   static const Color success = Color(0xFF55E6C1);

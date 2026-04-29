@@ -13,7 +13,7 @@ void main() {
 
     // Verify that the bottom navigation bar is present.
     expect(find.byType(BottomNavigationBar), findsOneWidget);
-    
+
     // Verify that the FloatingActionButton is present.
     expect(find.byType(FloatingActionButton), findsOneWidget);
   });

@@ -1,17 +1,62 @@
-# mobile
+# Closet App – Mobile
 
-A new Flutter project.
+A modern wardrobe manager built with Flutter, focusing on a **local-first** experience.
 
-## Getting Started
+## 🚀 Features (Current & Planned)
 
-This project is a starting point for a Flutter application.
+- **Wardrobe Management**: Store and organize clothing items.
+- **Local-First Architecture**: Fully functional offline using SQLite.
+- **Loan Tracking**: Keep track of who borrowed your items.
+- **Modern UI**: Clean, minimalist design with a centralized theme.
 
-A few resources to get you started if this is your first Flutter project:
+## 🧱 Architecture
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+The project follows a simplified **MVVM (Model-View-ViewModel)** architecture:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- `lib/screens/`: UI screens and page layouts.
+- `lib/widgets/`: Reusable UI components.
+- `lib/models/`: Data models and DTOs.
+- `lib/services/`: Business logic and database services (Drift).
+- `lib/providers/`: State management.
+- `lib/utils/`: Constants, theme, and helper functions.
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Flutter
+- **Database**: [Drift](https://drift.simonbinder.eu/) (SQLite)
+- **CI/CD**: GitHub Actions (using centralized templates)
+
+## 🛠️ Getting Started
+
+### Prerequisites
+
+- Flutter SDK (latest stable)
+- Dart SDK
+
+### Setup
+
+1. Clone the repository.
+2. Install dependencies:
+   ```bash
+   flutter pub get
+   ```
+3. Generate database code:
+   ```bash
+   flutter pub run build_runner build --delete-conflicting-outputs
+   ```
+
+### Running Tests
+
+Execute the unit test suite:
+```bash
+flutter test
+```
+
+## 🤖 CI/CD
+
+This project uses GitHub Actions to automate:
+- Static analysis (`flutter analyze`)
+- Unit testing (`flutter test`)
+- Android build verification
+
+The CI configuration is located in `.github/workflows/ci.yml`.
