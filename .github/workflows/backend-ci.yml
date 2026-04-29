@@ -15,7 +15,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_DB: closet_db
+          POSTGRES_USER: closet_user
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -28,6 +41,10 @@ jobs:
           cache: 'maven'
 
       - name: Build with Maven
+        env:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/closet_db
+          SPRING_DATASOURCE_USERNAME: closet_user
+          SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
-          cd backend # Navega a la carpeta del backend
-          mvn -B package --file pom.xml # Compila y empaqueta el proyecto
+          cd backend
+          mvn -B package --file pom.xml
