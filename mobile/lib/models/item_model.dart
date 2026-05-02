@@ -11,6 +11,11 @@ class ItemModel {
   final String? imagePath;
   final bool isFavorite;
   final int? wardrobeId;
+  final String? brand;
+  final String? description;
+  final String? sleeveLength;
+  final String? fabricType;
+  final String? pattern;
 
   ItemModel({
     this.id,
@@ -22,9 +27,13 @@ class ItemModel {
     this.imagePath,
     this.isFavorite = false,
     this.wardrobeId,
+    this.brand,
+    this.description,
+    this.sleeveLength,
+    this.fabricType,
+    this.pattern,
   });
 
-  // Convert from Database Entity (Drift) to UI Model
   factory ItemModel.fromEntity(Item entity) {
     return ItemModel(
       id: entity.id,
@@ -36,10 +45,14 @@ class ItemModel {
       imagePath: entity.imagePath,
       isFavorite: entity.isFavorite,
       wardrobeId: entity.wardrobeId,
+      brand: entity.brand,
+      description: entity.description,
+      sleeveLength: entity.sleeveLength,
+      fabricType: entity.fabricType,
+      pattern: entity.pattern,
     );
   }
 
-  // Convert from UI Model to Database Companion (for inserts/updates)
   ItemsCompanion toCompanion() {
     return ItemsCompanion.insert(
       name: name,
@@ -50,6 +63,11 @@ class ItemModel {
       imagePath: Value(imagePath),
       isFavorite: Value(isFavorite),
       wardrobeId: Value(wardrobeId),
+      brand: Value(brand),
+      description: Value(description),
+      sleeveLength: Value(sleeveLength),
+      fabricType: Value(fabricType),
+      pattern: Value(pattern),
     );
   }
 }

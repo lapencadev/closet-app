@@ -107,6 +107,59 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
     type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _brandMeta = const VerificationMeta('brand');
+  @override
+  late final GeneratedColumn<String> brand = GeneratedColumn<String>(
+    'brand',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _sleeveLengthMeta = const VerificationMeta(
+    'sleeveLength',
+  );
+  @override
+  late final GeneratedColumn<String> sleeveLength = GeneratedColumn<String>(
+    'sleeve_length',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _fabricTypeMeta = const VerificationMeta(
+    'fabricType',
+  );
+  @override
+  late final GeneratedColumn<String> fabricType = GeneratedColumn<String>(
+    'fabric_type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _patternMeta = const VerificationMeta(
+    'pattern',
+  );
+  @override
+  late final GeneratedColumn<String> pattern = GeneratedColumn<String>(
+    'pattern',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -118,6 +171,11 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
     imagePath,
     isFavorite,
     wardrobeId,
+    brand,
+    description,
+    sleeveLength,
+    fabricType,
+    pattern,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -186,6 +244,42 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
         wardrobeId.isAcceptableOrUnknown(data['wardrobe_id']!, _wardrobeIdMeta),
       );
     }
+    if (data.containsKey('brand')) {
+      context.handle(
+        _brandMeta,
+        brand.isAcceptableOrUnknown(data['brand']!, _brandMeta),
+      );
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('sleeve_length')) {
+      context.handle(
+        _sleeveLengthMeta,
+        sleeveLength.isAcceptableOrUnknown(
+          data['sleeve_length']!,
+          _sleeveLengthMeta,
+        ),
+      );
+    }
+    if (data.containsKey('fabric_type')) {
+      context.handle(
+        _fabricTypeMeta,
+        fabricType.isAcceptableOrUnknown(data['fabric_type']!, _fabricTypeMeta),
+      );
+    }
+    if (data.containsKey('pattern')) {
+      context.handle(
+        _patternMeta,
+        pattern.isAcceptableOrUnknown(data['pattern']!, _patternMeta),
+      );
+    }
     return context;
   }
 
@@ -231,6 +325,26 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
         DriftSqlType.int,
         data['${effectivePrefix}wardrobe_id'],
       ),
+      brand: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}brand'],
+      ),
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      sleeveLength: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sleeve_length'],
+      ),
+      fabricType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}fabric_type'],
+      ),
+      pattern: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pattern'],
+      ),
     );
   }
 
@@ -250,6 +364,11 @@ class Item extends DataClass implements Insertable<Item> {
   final String? imagePath;
   final bool isFavorite;
   final int? wardrobeId;
+  final String? brand;
+  final String? description;
+  final String? sleeveLength;
+  final String? fabricType;
+  final String? pattern;
   const Item({
     required this.id,
     required this.name,
@@ -260,6 +379,11 @@ class Item extends DataClass implements Insertable<Item> {
     this.imagePath,
     required this.isFavorite,
     this.wardrobeId,
+    this.brand,
+    this.description,
+    this.sleeveLength,
+    this.fabricType,
+    this.pattern,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -283,6 +407,21 @@ class Item extends DataClass implements Insertable<Item> {
     if (!nullToAbsent || wardrobeId != null) {
       map['wardrobe_id'] = Variable<int>(wardrobeId);
     }
+    if (!nullToAbsent || brand != null) {
+      map['brand'] = Variable<String>(brand);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || sleeveLength != null) {
+      map['sleeve_length'] = Variable<String>(sleeveLength);
+    }
+    if (!nullToAbsent || fabricType != null) {
+      map['fabric_type'] = Variable<String>(fabricType);
+    }
+    if (!nullToAbsent || pattern != null) {
+      map['pattern'] = Variable<String>(pattern);
+    }
     return map;
   }
 
@@ -305,6 +444,21 @@ class Item extends DataClass implements Insertable<Item> {
       wardrobeId: wardrobeId == null && nullToAbsent
           ? const Value.absent()
           : Value(wardrobeId),
+      brand: brand == null && nullToAbsent
+          ? const Value.absent()
+          : Value(brand),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      sleeveLength: sleeveLength == null && nullToAbsent
+          ? const Value.absent()
+          : Value(sleeveLength),
+      fabricType: fabricType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(fabricType),
+      pattern: pattern == null && nullToAbsent
+          ? const Value.absent()
+          : Value(pattern),
     );
   }
 
@@ -323,6 +477,11 @@ class Item extends DataClass implements Insertable<Item> {
       imagePath: serializer.fromJson<String?>(json['imagePath']),
       isFavorite: serializer.fromJson<bool>(json['isFavorite']),
       wardrobeId: serializer.fromJson<int?>(json['wardrobeId']),
+      brand: serializer.fromJson<String?>(json['brand']),
+      description: serializer.fromJson<String?>(json['description']),
+      sleeveLength: serializer.fromJson<String?>(json['sleeveLength']),
+      fabricType: serializer.fromJson<String?>(json['fabricType']),
+      pattern: serializer.fromJson<String?>(json['pattern']),
     );
   }
   @override
@@ -338,6 +497,11 @@ class Item extends DataClass implements Insertable<Item> {
       'imagePath': serializer.toJson<String?>(imagePath),
       'isFavorite': serializer.toJson<bool>(isFavorite),
       'wardrobeId': serializer.toJson<int?>(wardrobeId),
+      'brand': serializer.toJson<String?>(brand),
+      'description': serializer.toJson<String?>(description),
+      'sleeveLength': serializer.toJson<String?>(sleeveLength),
+      'fabricType': serializer.toJson<String?>(fabricType),
+      'pattern': serializer.toJson<String?>(pattern),
     };
   }
 
@@ -351,6 +515,11 @@ class Item extends DataClass implements Insertable<Item> {
     Value<String?> imagePath = const Value.absent(),
     bool? isFavorite,
     Value<int?> wardrobeId = const Value.absent(),
+    Value<String?> brand = const Value.absent(),
+    Value<String?> description = const Value.absent(),
+    Value<String?> sleeveLength = const Value.absent(),
+    Value<String?> fabricType = const Value.absent(),
+    Value<String?> pattern = const Value.absent(),
   }) => Item(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -361,6 +530,11 @@ class Item extends DataClass implements Insertable<Item> {
     imagePath: imagePath.present ? imagePath.value : this.imagePath,
     isFavorite: isFavorite ?? this.isFavorite,
     wardrobeId: wardrobeId.present ? wardrobeId.value : this.wardrobeId,
+    brand: brand.present ? brand.value : this.brand,
+    description: description.present ? description.value : this.description,
+    sleeveLength: sleeveLength.present ? sleeveLength.value : this.sleeveLength,
+    fabricType: fabricType.present ? fabricType.value : this.fabricType,
+    pattern: pattern.present ? pattern.value : this.pattern,
   );
   Item copyWithCompanion(ItemsCompanion data) {
     return Item(
@@ -377,6 +551,17 @@ class Item extends DataClass implements Insertable<Item> {
       wardrobeId: data.wardrobeId.present
           ? data.wardrobeId.value
           : this.wardrobeId,
+      brand: data.brand.present ? data.brand.value : this.brand,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      sleeveLength: data.sleeveLength.present
+          ? data.sleeveLength.value
+          : this.sleeveLength,
+      fabricType: data.fabricType.present
+          ? data.fabricType.value
+          : this.fabricType,
+      pattern: data.pattern.present ? data.pattern.value : this.pattern,
     );
   }
 
@@ -391,7 +576,12 @@ class Item extends DataClass implements Insertable<Item> {
           ..write('size: $size, ')
           ..write('imagePath: $imagePath, ')
           ..write('isFavorite: $isFavorite, ')
-          ..write('wardrobeId: $wardrobeId')
+          ..write('wardrobeId: $wardrobeId, ')
+          ..write('brand: $brand, ')
+          ..write('description: $description, ')
+          ..write('sleeveLength: $sleeveLength, ')
+          ..write('fabricType: $fabricType, ')
+          ..write('pattern: $pattern')
           ..write(')'))
         .toString();
   }
@@ -407,6 +597,11 @@ class Item extends DataClass implements Insertable<Item> {
     imagePath,
     isFavorite,
     wardrobeId,
+    brand,
+    description,
+    sleeveLength,
+    fabricType,
+    pattern,
   );
   @override
   bool operator ==(Object other) =>
@@ -420,7 +615,12 @@ class Item extends DataClass implements Insertable<Item> {
           other.size == this.size &&
           other.imagePath == this.imagePath &&
           other.isFavorite == this.isFavorite &&
-          other.wardrobeId == this.wardrobeId);
+          other.wardrobeId == this.wardrobeId &&
+          other.brand == this.brand &&
+          other.description == this.description &&
+          other.sleeveLength == this.sleeveLength &&
+          other.fabricType == this.fabricType &&
+          other.pattern == this.pattern);
 }
 
 class ItemsCompanion extends UpdateCompanion<Item> {
@@ -433,6 +633,11 @@ class ItemsCompanion extends UpdateCompanion<Item> {
   final Value<String?> imagePath;
   final Value<bool> isFavorite;
   final Value<int?> wardrobeId;
+  final Value<String?> brand;
+  final Value<String?> description;
+  final Value<String?> sleeveLength;
+  final Value<String?> fabricType;
+  final Value<String?> pattern;
   const ItemsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -443,6 +648,11 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     this.imagePath = const Value.absent(),
     this.isFavorite = const Value.absent(),
     this.wardrobeId = const Value.absent(),
+    this.brand = const Value.absent(),
+    this.description = const Value.absent(),
+    this.sleeveLength = const Value.absent(),
+    this.fabricType = const Value.absent(),
+    this.pattern = const Value.absent(),
   });
   ItemsCompanion.insert({
     this.id = const Value.absent(),
@@ -454,6 +664,11 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     this.imagePath = const Value.absent(),
     this.isFavorite = const Value.absent(),
     this.wardrobeId = const Value.absent(),
+    this.brand = const Value.absent(),
+    this.description = const Value.absent(),
+    this.sleeveLength = const Value.absent(),
+    this.fabricType = const Value.absent(),
+    this.pattern = const Value.absent(),
   }) : name = Value(name),
        type = Value(type);
   static Insertable<Item> custom({
@@ -466,6 +681,11 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     Expression<String>? imagePath,
     Expression<bool>? isFavorite,
     Expression<int>? wardrobeId,
+    Expression<String>? brand,
+    Expression<String>? description,
+    Expression<String>? sleeveLength,
+    Expression<String>? fabricType,
+    Expression<String>? pattern,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -477,6 +697,11 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       if (imagePath != null) 'image_path': imagePath,
       if (isFavorite != null) 'is_favorite': isFavorite,
       if (wardrobeId != null) 'wardrobe_id': wardrobeId,
+      if (brand != null) 'brand': brand,
+      if (description != null) 'description': description,
+      if (sleeveLength != null) 'sleeve_length': sleeveLength,
+      if (fabricType != null) 'fabric_type': fabricType,
+      if (pattern != null) 'pattern': pattern,
     });
   }
 
@@ -490,6 +715,11 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     Value<String?>? imagePath,
     Value<bool>? isFavorite,
     Value<int?>? wardrobeId,
+    Value<String?>? brand,
+    Value<String?>? description,
+    Value<String?>? sleeveLength,
+    Value<String?>? fabricType,
+    Value<String?>? pattern,
   }) {
     return ItemsCompanion(
       id: id ?? this.id,
@@ -501,6 +731,11 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       imagePath: imagePath ?? this.imagePath,
       isFavorite: isFavorite ?? this.isFavorite,
       wardrobeId: wardrobeId ?? this.wardrobeId,
+      brand: brand ?? this.brand,
+      description: description ?? this.description,
+      sleeveLength: sleeveLength ?? this.sleeveLength,
+      fabricType: fabricType ?? this.fabricType,
+      pattern: pattern ?? this.pattern,
     );
   }
 
@@ -534,6 +769,21 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     if (wardrobeId.present) {
       map['wardrobe_id'] = Variable<int>(wardrobeId.value);
     }
+    if (brand.present) {
+      map['brand'] = Variable<String>(brand.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (sleeveLength.present) {
+      map['sleeve_length'] = Variable<String>(sleeveLength.value);
+    }
+    if (fabricType.present) {
+      map['fabric_type'] = Variable<String>(fabricType.value);
+    }
+    if (pattern.present) {
+      map['pattern'] = Variable<String>(pattern.value);
+    }
     return map;
   }
 
@@ -548,7 +798,12 @@ class ItemsCompanion extends UpdateCompanion<Item> {
           ..write('size: $size, ')
           ..write('imagePath: $imagePath, ')
           ..write('isFavorite: $isFavorite, ')
-          ..write('wardrobeId: $wardrobeId')
+          ..write('wardrobeId: $wardrobeId, ')
+          ..write('brand: $brand, ')
+          ..write('description: $description, ')
+          ..write('sleeveLength: $sleeveLength, ')
+          ..write('fabricType: $fabricType, ')
+          ..write('pattern: $pattern')
           ..write(')'))
         .toString();
   }
@@ -999,6 +1254,11 @@ typedef $$ItemsTableCreateCompanionBuilder =
       Value<String?> imagePath,
       Value<bool> isFavorite,
       Value<int?> wardrobeId,
+      Value<String?> brand,
+      Value<String?> description,
+      Value<String?> sleeveLength,
+      Value<String?> fabricType,
+      Value<String?> pattern,
     });
 typedef $$ItemsTableUpdateCompanionBuilder =
     ItemsCompanion Function({
@@ -1011,6 +1271,11 @@ typedef $$ItemsTableUpdateCompanionBuilder =
       Value<String?> imagePath,
       Value<bool> isFavorite,
       Value<int?> wardrobeId,
+      Value<String?> brand,
+      Value<String?> description,
+      Value<String?> sleeveLength,
+      Value<String?> fabricType,
+      Value<String?> pattern,
     });
 
 final class $$ItemsTableReferences
@@ -1088,6 +1353,31 @@ class $$ItemsTableFilterComposer
 
   ColumnFilters<int> get wardrobeId => $composableBuilder(
     column: $table.wardrobeId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get brand => $composableBuilder(
+    column: $table.brand,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get sleeveLength => $composableBuilder(
+    column: $table.sleeveLength,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get fabricType => $composableBuilder(
+    column: $table.fabricType,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pattern => $composableBuilder(
+    column: $table.pattern,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1170,6 +1460,31 @@ class $$ItemsTableOrderingComposer
     column: $table.wardrobeId,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get brand => $composableBuilder(
+    column: $table.brand,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get sleeveLength => $composableBuilder(
+    column: $table.sleeveLength,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get fabricType => $composableBuilder(
+    column: $table.fabricType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pattern => $composableBuilder(
+    column: $table.pattern,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ItemsTableAnnotationComposer
@@ -1211,6 +1526,27 @@ class $$ItemsTableAnnotationComposer
     column: $table.wardrobeId,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get brand =>
+      $composableBuilder(column: $table.brand, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get sleeveLength => $composableBuilder(
+    column: $table.sleeveLength,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get fabricType => $composableBuilder(
+    column: $table.fabricType,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get pattern =>
+      $composableBuilder(column: $table.pattern, builder: (column) => column);
 
   Expression<T> loansRefs<T extends Object>(
     Expression<T> Function($$LoansTableAnnotationComposer a) f,
@@ -1275,6 +1611,11 @@ class $$ItemsTableTableManager
                 Value<String?> imagePath = const Value.absent(),
                 Value<bool> isFavorite = const Value.absent(),
                 Value<int?> wardrobeId = const Value.absent(),
+                Value<String?> brand = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> sleeveLength = const Value.absent(),
+                Value<String?> fabricType = const Value.absent(),
+                Value<String?> pattern = const Value.absent(),
               }) => ItemsCompanion(
                 id: id,
                 name: name,
@@ -1285,6 +1626,11 @@ class $$ItemsTableTableManager
                 imagePath: imagePath,
                 isFavorite: isFavorite,
                 wardrobeId: wardrobeId,
+                brand: brand,
+                description: description,
+                sleeveLength: sleeveLength,
+                fabricType: fabricType,
+                pattern: pattern,
               ),
           createCompanionCallback:
               ({
@@ -1297,6 +1643,11 @@ class $$ItemsTableTableManager
                 Value<String?> imagePath = const Value.absent(),
                 Value<bool> isFavorite = const Value.absent(),
                 Value<int?> wardrobeId = const Value.absent(),
+                Value<String?> brand = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> sleeveLength = const Value.absent(),
+                Value<String?> fabricType = const Value.absent(),
+                Value<String?> pattern = const Value.absent(),
               }) => ItemsCompanion.insert(
                 id: id,
                 name: name,
@@ -1307,6 +1658,11 @@ class $$ItemsTableTableManager
                 imagePath: imagePath,
                 isFavorite: isFavorite,
                 wardrobeId: wardrobeId,
+                brand: brand,
+                description: description,
+                sleeveLength: sleeveLength,
+                fabricType: fabricType,
+                pattern: pattern,
               ),
           withReferenceMapper: (p0) => p0
               .map(

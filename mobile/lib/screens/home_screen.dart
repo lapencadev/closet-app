@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/screens/add_item_screen.dart';
 import 'package:mobile/utils/app_colors.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -99,7 +100,15 @@ class _MyHomePageState extends State<MyHomePage> {
         onTap: _onItemTapped,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          final added = await Navigator.push<bool>(
+            context,
+            MaterialPageRoute(builder: (_) => const AddItemScreen()),
+          );
+          if (added == true) {
+            // TODO: refresh item list when data binding is wired up
+          }
+        },
         backgroundColor: AppColors.primary,
         child: const Icon(Icons.add, color: Colors.white),
       ),
