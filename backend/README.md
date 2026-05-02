@@ -1,94 +1,81 @@
-# Closet Micro Server
+# Closet App – Backend
 
-Backend project for managing personal closets, garments, and accessories, developed with **Java 23**, **Spring Boot 3.4.2**, and **Maven**.
+Optional REST API for the Closet App. The Flutter mobile app is fully functional without this service — the backend provides **sync, backup, and export** capabilities when the user opts in.
 
-## Features
+## Role in the hybrid architecture
 
-- User management and authentication
-- Management of garments and accessories (create, delete, update, retrieve)
-- Organization by closets
-- Lending of garments and accessories
-- Support for item images
-- Database version control with Flyway
+```
+Flutter (local SQLite)  ──→  Spring Boot API  ──→  PostgreSQL
+        ↑ default                  ↑ optional sync
+   always available           user-triggered
+```
 
-## Technologies
+The backend exposes endpoints for:
+- Receiving item and wardrobe data from the mobile app (sync)
+- Storing uploaded item images
+- Serving data for multi-device access or web access (future)
+
+## Tech Stack
 
 - **Java 23**
+- **Spring Boot 3.4.2**
 - **Maven 3.9+**
 - **PostgreSQL 15+**
-- **Spring Boot 3.4.2**
 - **Spring Data JPA / Hibernate**
 - **Lombok**
-- **Flyway** (Database migrations)
-- **SpringDoc OpenAPI** (Swagger UI)
+- **Flyway** – database migrations
+- **SpringDoc OpenAPI** – Swagger UI
 
 ## Project Structure
 
-- `src/main/java`: Main source code
-- `src/main/resources`: Configuration files
-  - `application.properties`: General configuration.
-  - `application-local.properties`: Local environment overrides (ignored by Git).
-  - `db/migration/`: Flyway SQL migration scripts.
-- `src/test/java`: Unit and integration tests.
-
 ```
-│
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com.closet/ (base package)
-│   │   │        ├── admin/
-│   │   │        ├── login/
-│   │   │        ├── user/
-│   │   │        └── wardrobeManager/
-│   │   │             ├── accessories/
-│   │   │             ├── clothes/
-│   │   │             ├── item/
-│   │   │             ├── loan/
-│   │   │             ├── wardrobe/
-│   │   │             └── util/
-│   │   └── resources/
-│   │        ├── application.properties
-│   │        ├── application-local.properties
-│   │        └── db/
-│   │             └── migration/
-│   │                  └── (V1.X.X__*.sql scripts)
-│   └── test/
-├── pom.xml
-└── README.md
+backend/
+ └── src/
+      ├── main/
+      │    ├── java/com.closet/
+      │    │    ├── admin/
+      │    │    ├── login/
+      │    │    ├── user/
+      │    │    └── wardrobeManager/
+      │    │         ├── accessories/
+      │    │         ├── clothes/
+      │    │         ├── item/
+      │    │         ├── loan/
+      │    │         ├── wardrobe/
+      │    │         └── util/
+      │    └── resources/
+      │         ├── application.properties
+      │         ├── application-local.properties  ← git-ignored
+      │         └── db/migration/                 ← Flyway scripts
+      └── test/
 ```
 
-## Setup & Execution
+## Setup
 
 ### Prerequisites
-- Docker (optional, for PostgreSQL) or a local PostgreSQL instance.
-- JDK 23.
-- Maven 3.9+.
 
-### Database Setup
-1. Create a database named `closet_db` in your PostgreSQL instance.
-2. Configure your local database connection in `src/main/resources/application-local.properties` (this file is ignored by Git, you may need to create it):
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/closet_db
-   spring.datasource.username=your_user
-   spring.datasource.password=your_password
-   spring.jpa.hibernate.ddl-auto=update
-   ```
+- JDK 23
+- Maven 3.9+
+- PostgreSQL 15+ (or Docker)
 
-### Run the project
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/lapencadev/closet-micro-server.git
-   ```
-2. Build the project:
-   ```bash
-   mvn clean install
-   ```
-3. Run with the local profile:
-   ```bash
-   mvn spring-boot:run -Dspring-boot.run.profiles=local
-   ```
+### Database
 
-## Documentation
-Once the application is running, you can access the Swagger UI at:
-`http://localhost:8080/swagger-ui/index.html`
+Create a local database and configure `src/main/resources/application-local.properties` (this file is git-ignored — create it if it doesn't exist):
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/closet_db
+spring.datasource.username=your_user
+spring.datasource.password=your_password
+spring.jpa.hibernate.ddl-auto=update
+```
+
+### Run
+
+```bash
+mvn clean install
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+## API Docs
+
+Swagger UI is available at `http://localhost:8080/swagger-ui/index.html` once the app is running.
