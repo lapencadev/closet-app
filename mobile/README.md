@@ -1,32 +1,49 @@
 # Closet App – Mobile
 
-A modern wardrobe manager built with Flutter, focusing on a **local-first** experience.
+Flutter app for managing your personal wardrobe with a **local-first** approach: everything works offline, with optional sync to the backend.
 
-## 🚀 Features (Current & Planned)
+## Architecture
 
-- **Wardrobe Management**: Store and organize clothing items.
-- **Local-First Architecture**: Fully functional offline using SQLite.
-- **Loan Tracking**: Keep track of who borrowed your items.
-- **Modern UI**: Clean, minimalist design with a centralized theme.
+```
+Flutter App
+ ├── SQLite (Drift)     ← all structured data
+ ├── Local filesystem   ← images in app documents directory
+ └── HTTP (optional)    ← sync / export to Spring Boot backend
+```
 
-## 🧱 Architecture
+The app is fully functional without a network connection. Backend sync is a user-triggered, opt-in feature.
 
-The project follows a simplified **MVVM (Model-View-ViewModel)** architecture:
+### Image strategy
 
-- `lib/screens/`: UI screens and page layouts.
-- `lib/widgets/`: Reusable UI components.
-- `lib/models/`: Data models and DTOs.
-- `lib/services/`: Business logic and database services (Drift).
-- `lib/providers/`: State management.
-- `lib/utils/`: Constants, theme, and helper functions.
+When the user picks or takes a photo, the app **copies it into its own documents directory** (`getApplicationDocumentsDirectory()/closet/items/`). The SQLite record stores this internal path. This means:
 
-## 🛠️ Tech Stack
+- Images survive gallery deletions
+- Images travel with the app backup
+- On sync, the file is uploaded to the backend alongside the item data
 
-- **Frontend**: Flutter
-- **Database**: [Drift](https://drift.simonbinder.eu/) (SQLite)
-- **CI/CD**: GitHub Actions (using centralized templates)
+## Tech Stack
 
-## 🛠️ Getting Started
+- **Flutter** / Dart
+- **Drift** (SQLite wrapper with type-safe queries)
+- **path_provider** – resolves the app's documents directory
+- **image_picker** *(planned)* – camera and gallery access
+- **GitHub Actions** – CI (analyze, test, Android build)
+
+## Project Structure
+
+```
+lib/
+ ├── main.dart
+ ├── app.dart
+ ├── models/          # UI models (ItemModel, LoanModel)
+ ├── screens/         # Page-level widgets
+ ├── widgets/         # Reusable components
+ ├── services/        # Drift database definition and queries
+ ├── providers/       # State management
+ └── utils/           # Theme, colours, constants, API config
+```
+
+## Getting Started
 
 ### Prerequisites
 
@@ -35,28 +52,37 @@ The project follows a simplified **MVVM (Model-View-ViewModel)** architecture:
 
 ### Setup
 
-1. Clone the repository.
-2. Install dependencies:
-   ```bash
-   flutter pub get
-   ```
-3. Generate database code:
-   ```bash
-   flutter pub run build_runner build --delete-conflicting-outputs
-   ```
+```bash
+flutter pub get
+flutter pub run build_runner build --delete-conflicting-outputs
+```
 
-### Running Tests
+### Run
 
-Execute the unit test suite:
+```bash
+flutter run
+```
+
+### Tests
+
 ```bash
 flutter test
 ```
 
-## 🤖 CI/CD
+## CI/CD
 
-This project uses GitHub Actions to automate:
-- Static analysis (`flutter analyze`)
-- Unit testing (`flutter test`)
+GitHub Actions runs on every push:
+
+- `flutter analyze` – static analysis
+- `flutter test` – unit tests
 - Android build verification
 
-The CI configuration is located in `.github/workflows/ci.yml`.
+Config: `.github/workflows/ci.yml`
+
+## Planned Features
+
+- [ ] Item image picker with internal copy
+- [ ] Wardrobe screen (group items by wardrobe)
+- [ ] Loan tracking UI
+- [ ] Optional backend sync
+- [ ] Export / backup
