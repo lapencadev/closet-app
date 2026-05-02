@@ -41,5 +41,6 @@ public class Wardrobe extends AuditableEntity {
 
     // Cascade ALL para borrar todos los items pero no sé si quiero eso
     @OneToMany(mappedBy="wardrobe", cascade=CascadeType.ALL, orphanRemoval=true)
+    @Builder.Default
     private Set<Item> items = new HashSet<>();
 }
