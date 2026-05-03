@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/home_screen.dart';
+import 'package:mobile/screens/auth_wrapper.dart';
 import 'package:mobile/utils/app_theme.dart';
 
 class MyApp extends StatelessWidget {
@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
       title: 'My Closet',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const MyHomePage(title: 'My Closet'),
+      home: const AuthWrapper(),
     );
   }
 }

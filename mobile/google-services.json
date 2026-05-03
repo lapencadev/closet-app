@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "577726995056",
+    "project_id": "wardrobe-5f0e2",
+    "storage_bucket": "wardrobe-5f0e2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577726995056:android:902808793cda10489df2b5",
+        "android_client_info": {
+          "package_name": "com.example.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577726995056-fftluvtdjvftj8l4m64ku2s8q1389b0r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mobile",
+            "certificate_hash": "a9382f77aef2914f1b708c075e48f06ad13353d3"
+          }
+        },
+        {
+          "client_id": "577726995056-hvrj763ofo7jov2ahiam9l3125nsr42a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFTJBJi9Zj3IzSVxtwOzCVx5UQjDsbgn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577726995056-hvrj763ofo7jov2ahiam9l3125nsr42a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "577726995056-val1e3in28i5ncs7863570ctnu02k339.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.mobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

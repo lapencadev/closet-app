@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/add_item_screen.dart';
 import 'package:mobile/utils/app_colors.dart';
@@ -30,6 +31,10 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: const Icon(Icons.notifications_none),
             onPressed: () {},
           ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => FirebaseAuth.instance.signOut(),
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -38,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Welcome back, 👋',
+              'Welcome back, ${FirebaseAuth.instance.currentUser?.displayName?.split(' ').first ?? ''} 👋',
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 8),

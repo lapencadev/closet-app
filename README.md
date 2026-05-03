@@ -20,29 +20,34 @@ This project follows a **local-first architecture**:
 
 ## 🧱 Tech Stack
 
-- Flutter
-- SQLite (Drift)
-- Spring Boot (optional)
-- Docker (future)
+- Flutter / Dart
+- Firebase Auth (email/password + Google Sign-In)
+- SQLite (Drift) – local-first storage
+- Spring Boot – REST backend
+- PostgreSQL – backend database
+- Gemini API – AI clothing analysis
+- Docker / Docker Compose
 
 ## 📦 Project Structure
 
+```
 closet-app/
-├── mobile/
-├── backend/
-└── docs/
+├── mobile/    # Flutter app
+└── backend/   # Spring Boot API
+```
 
 ## 🛠️ Development Roadmap
 
-1. MVP (local storage)
-2. Filters & loans
-3. Backup system
-4. Optional backend sync
-5. AI features
+1. ✅ MVP (local storage + item creation)
+2. ✅ AI clothing analysis (Gemini)
+3. ✅ Firebase authentication + backend user sync
+4. Load wardrobe items from backend
+5. Filters, search & loan tracking
+6. Backup / export
 
 ## 🔐 Privacy
 
-User data is stored locally and never shared unless explicitly exported.
+User data is stored locally first and only sent to the backend when authenticated.
 
 ## 📌 Status
 
