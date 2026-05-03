@@ -69,13 +69,25 @@ backend/
 
 - JDK 23
 - Maven 3.9+
-- PostgreSQL 15+ (or Docker — `docker-compose up` in repo root)
+- PostgreSQL 15+ running locally **or** Docker (see below)
 - A Firebase project with a service account
+
+### Database options
+
+**Option A — PostgreSQL local** (recommended for daily development):
+Just have PostgreSQL running on port 5432. Flyway creates the schema automatically on first run.
+
+**Option B — Docker** (useful for demos or when PostgreSQL is not installed):
+```bash
+# From repo root — starts only the database
+docker-compose up db
+```
+The full `docker-compose up` also builds and runs the Spring Boot container, but requires passing the Firebase service account into the container (not configured by default).
 
 ### Firebase service account
 
 1. Firebase Console → Project Settings → Service Accounts → **Generate new private key**
-2. Save the downloaded JSON somewhere outside the repo
+2. Save the downloaded JSON somewhere outside the repo (e.g. `~/Documents/wardrobe.json`)
 
 ### Local config
 
