@@ -21,7 +21,20 @@
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 		<commons-lang3.version>3.20.0</commons-lang3.version>
 		<commons-compress.version>1.27.1</commons-compress.version>
+		<!-- CVE-2026-42198: SCRAM-SHA-256 DoS en pgjdbc -->
+		<postgresql.version>42.7.11</postgresql.version>
 	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<!-- CVE-2025-55163: HTTP/2 MadeYouReset DDoS en Netty (transitivo de firebase-admin) -->
+			<dependency>
+				<groupId>io.grpc</groupId>
+				<artifactId>grpc-netty-shaded</artifactId>
+				<version>1.75.0</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -103,6 +116,19 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-compress</artifactId>
 			<version>${commons-compress.version}</version>
+		</dependency>
+
+		<!-- Spring Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- Firebase Admin SDK -->
+		<dependency>
+			<groupId>com.google.firebase</groupId>
+			<artifactId>firebase-admin</artifactId>
+			<version>9.4.3</version>
 		</dependency>
 	</dependencies>
 

@@ -29,8 +29,8 @@ public class User extends AuditableEntity {
     @Column(unique = true)
     private String email;
 
-    @NotNull
-    private String password; // Password should be stored securely (hashed)
+    @Column(unique = true)
+    private String firebaseUid;
 
     private String profilePictureUrl;
 
