@@ -1,53 +1,66 @@
 # Closet App – Backend
 
-Optional REST API for the Closet App. The Flutter mobile app is fully functional without this service — the backend provides **sync, backup, and export** capabilities when the user opts in.
+REST API for the Closet App. Handles authentication via Firebase tokens and stores user wardrobe data in PostgreSQL.
 
-## Role in the hybrid architecture
+## Architecture
 
 ```
-Flutter (local SQLite)  ──→  Spring Boot API  ──→  PostgreSQL
-        ↑ default                  ↑ optional sync
-   always available           user-triggered
+Mobile (Flutter)
+  └── Firebase Auth ──→ ID token (JWT)
+         │
+         ▼
+  Spring Boot API  ──→  PostgreSQL
+  - validates token locally (no Firebase call)
+  - creates user on first login (findOrCreate)
+  - protects all endpoints with Spring Security
 ```
-
-The backend exposes endpoints for:
-- Receiving item and wardrobe data from the mobile app (sync)
-- Storing uploaded item images
-- Serving data for multi-device access or web access (future)
 
 ## Tech Stack
 
 - **Java 23**
-- **Spring Boot 3.4.2**
+- **Spring Boot 3.5.14**
 - **Maven 3.9+**
 - **PostgreSQL 15+**
+- **Spring Security** – stateless JWT-based auth
+- **Firebase Admin SDK 9.4.3** – ID token validation
 - **Spring Data JPA / Hibernate**
-- **Lombok**
 - **Flyway** – database migrations
-- **SpringDoc OpenAPI** – Swagger UI
+- **Lombok + MapStruct**
+- **SpringDoc OpenAPI** – Swagger UI at `/swagger-ui/index.html`
 
 ## Project Structure
 
 ```
 backend/
  └── src/
-      ├── main/
-      │    ├── java/com.closet/
-      │    │    ├── admin/
-      │    │    ├── login/
-      │    │    ├── user/
-      │    │    └── wardrobeManager/
-      │    │         ├── accessories/
-      │    │         ├── clothes/
-      │    │         ├── item/
-      │    │         ├── loan/
-      │    │         ├── wardrobe/
-      │    │         └── util/
-      │    └── resources/
-      │         ├── application.properties
-      │         ├── application-local.properties  ← git-ignored
-      │         └── db/migration/                 ← Flyway scripts
-      └── test/
+      ├── main/java/
+      │    ├── admin/
+      │    │    ├── config/
+      │    │    │    ├── FirebaseConfig.java     ← Firebase Admin SDK init
+      │    │    │    ├── SecurityConfig.java     ← Spring Security (stateless)
+      │    │    │    └── OpenApiConfig.java      ← Swagger Bearer auth
+      │    │    └── security/
+      │    │         └── FirebaseTokenFilter.java ← validates JWT per request
+      │    ├── user/
+      │    │    ├── User.java
+      │    │    ├── UserRepository.java
+      │    │    ├── UserService.java             ← findOrCreate from Firebase token
+      │    │    └── UserController.java          ← GET /api/users/me
+      │    └── wardrobeManager/
+      │         ├── clothes/
+      │         ├── item/
+      │         ├── loan/
+      │         ├── wardrobe/
+      │         └── util/
+      ├── resources/
+      │    ├── application.properties
+      │    ├── application-local.properties      ← git-ignored
+      │    └── db/migration/                     ← Flyway scripts
+      └── test/java/
+           ├── admin/
+           │    ├── TestFirebaseConfig.java       ← mock FirebaseAuth for tests
+           │    └── security/FirebaseTokenFilterTest.java
+           └── user/UserServiceTest.java
 ```
 
 ## Setup
@@ -56,26 +69,64 @@ backend/
 
 - JDK 23
 - Maven 3.9+
-- PostgreSQL 15+ (or Docker)
+- PostgreSQL 15+ (or Docker — `docker-compose up` in repo root)
+- A Firebase project with a service account
 
-### Database
+### Firebase service account
 
-Create a local database and configure `src/main/resources/application-local.properties` (this file is git-ignored — create it if it doesn't exist):
+1. Firebase Console → Project Settings → Service Accounts → **Generate new private key**
+2. Save the downloaded JSON somewhere outside the repo
+
+### Local config
+
+Create `src/main/resources/application-local.properties` (git-ignored):
 
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/closet_db
 spring.datasource.username=your_user
 spring.datasource.password=your_password
-spring.jpa.hibernate.ddl-auto=update
+
+firebase.service-account-path=/absolute/path/to/firebase-service-account.json
 ```
 
 ### Run
 
 ```bash
-mvn clean install
-mvn spring-boot:run -Dspring-boot.run.profiles=local
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
-## API Docs
+Swagger UI: `http://localhost:8080/swagger-ui/index.html`
 
-Swagger UI is available at `http://localhost:8080/swagger-ui/index.html` once the app is running.
+To test authenticated endpoints, click **Authorize** and paste a Firebase ID token (without the `Bearer ` prefix — Swagger adds it automatically).
+
+### Tests
+
+```bash
+./mvnw test
+```
+
+Tests use a mock `FirebaseAuth` (profile `test`) — no service account needed. A real PostgreSQL instance is required for integration tests.
+
+## Auth flow
+
+```
+Mobile ──login──▶ Firebase ──ID token──▶ Mobile
+Mobile ──request + token──▶ FirebaseTokenFilter
+         ──verifyIdToken() local──▶ ✅ valid
+         ──UserService.findOrCreate()──▶ User in DB
+         ──SecurityContext──▶ Controller
+```
+
+Every protected endpoint receives the authenticated `User` via `@AuthenticationPrincipal`.
+
+## Current endpoints
+
+| Method | Path | Description |
+|--------|------|-------------|
+| GET | `/api/users/me` | Returns the authenticated user |
+
+## Planned
+
+- [ ] `GET/POST /api/wardrobes` – wardrobe management
+- [ ] `GET/POST /api/items` – item sync from mobile
+- [ ] Image upload endpoint
