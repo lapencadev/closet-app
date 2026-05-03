@@ -258,26 +258,32 @@ class _AddItemScreenState extends State<AddItemScreen> {
       final analysis = await _aiService.analyzeClothing(_image!);
       if (!mounted) return;
       setState(() {
-        if (analysis.name?.isNotEmpty == true)
+        if (analysis.name?.isNotEmpty == true) {
           _nameController.text = analysis.name!;
-        if (analysis.type != null && _types.contains(analysis.type))
+        }
+        if (analysis.type != null && _types.contains(analysis.type)) {
           _type = analysis.type!;
+        }
         if (analysis.colour != null && _colours.contains(analysis.colour)) {
           _colour = analysis.colour;
           _colourFieldKey.currentState?.didChange(_colour);
         }
-        if (analysis.season != null && _seasons.contains(analysis.season))
+        if (analysis.season != null && _seasons.contains(analysis.season)) {
           _season = analysis.season;
+        }
         if (analysis.sleeveLength != null &&
             _sleeveLengths.contains(analysis.sleeveLength)) {
           _sleeveLength = analysis.sleeveLength;
         }
-        if (analysis.fabricType?.isNotEmpty == true)
+        if (analysis.fabricType?.isNotEmpty == true) {
           _fabricController.text = analysis.fabricType!;
-        if (analysis.pattern?.isNotEmpty == true)
+        }
+        if (analysis.pattern?.isNotEmpty == true) {
           _patternController.text = analysis.pattern!;
-        if (analysis.description?.isNotEmpty == true)
+        }
+        if (analysis.description?.isNotEmpty == true) {
           _descriptionController.text = analysis.description!;
+        }
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

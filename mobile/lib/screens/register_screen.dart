@@ -181,8 +181,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ),
             validator: (v) {
               if (v == null || v.isEmpty) return 'Please confirm your password';
-              if (v != _passwordController.text)
+              if (v != _passwordController.text) {
                 return 'Passwords do not match';
+              }
               return null;
             },
           ),

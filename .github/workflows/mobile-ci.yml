@@ -27,6 +27,9 @@ jobs:
           channel: 'stable'
           cache: true
           
+      - name: Create secrets stub
+        run: cp lib/config/secrets.template.dart lib/config/secrets.dart
+
       - name: Install dependencies
         run: flutter pub get
         
