@@ -147,12 +147,19 @@ class _LoginScreenState extends State<LoginScreen> {
             color: AppColors.primary,
             borderRadius: BorderRadius.circular(24),
           ),
-          child: const Icon(Icons.checkroom_outlined, color: Colors.white, size: 44),
+          child: const Icon(
+            Icons.checkroom_outlined,
+            color: Colors.white,
+            size: 44,
+          ),
         ),
         const SizedBox(height: 20),
         Text('My Closet', style: Theme.of(context).textTheme.headlineLarge),
         const SizedBox(height: 6),
-        Text('Sign in to your wardrobe', style: Theme.of(context).textTheme.bodyMedium),
+        Text(
+          'Sign in to your wardrobe',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
       ],
     );
   }
@@ -189,12 +196,16 @@ class _LoginScreenState extends State<LoginScreen> {
               border: const OutlineInputBorder(),
               suffixIcon: IconButton(
                 icon: Icon(
-                  _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                  _obscurePassword
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
                 ),
-                onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                onPressed: () =>
+                    setState(() => _obscurePassword = !_obscurePassword),
               ),
             ),
-            validator: (v) => (v == null || v.isEmpty) ? 'Password is required' : null,
+            validator: (v) =>
+                (v == null || v.isEmpty) ? 'Password is required' : null,
           ),
         ],
       ),
@@ -209,15 +220,23 @@ class _LoginScreenState extends State<LoginScreen> {
         onPressed: _isLoading ? null : _login,
         style: FilledButton.styleFrom(
           backgroundColor: AppColors.primary,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         child: _isLoading
             ? const SizedBox(
                 width: 22,
                 height: 22,
-                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2.5,
+                ),
               )
-            : const Text('Sign in', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            : const Text(
+                'Sign in',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
       ),
     );
   }
@@ -225,7 +244,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildForgotPassword() {
     return TextButton(
       onPressed: _forgotPassword,
-      child: Text('Forgot your password?', style: TextStyle(color: AppColors.textSecondary)),
+      child: Text(
+        'Forgot your password?',
+        style: TextStyle(color: AppColors.textSecondary),
+      ),
     );
   }
 
@@ -235,7 +257,10 @@ class _LoginScreenState extends State<LoginScreen> {
         const Expanded(child: Divider()),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Text('or', style: TextStyle(color: AppColors.textSecondary, fontSize: 13)),
+          child: Text(
+            'or',
+            style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+          ),
         ),
         const Expanded(child: Divider()),
       ],
@@ -249,7 +274,9 @@ class _LoginScreenState extends State<LoginScreen> {
       child: OutlinedButton(
         onPressed: _isGoogleLoading ? null : _signInWithGoogle,
         style: OutlinedButton.styleFrom(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
           side: BorderSide(color: AppColors.greyMedium),
         ),
         child: _isGoogleLoading
@@ -265,7 +292,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(width: 12),
                   const Text(
                     'Continue with Google',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppColors.textPrimary),
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                 ],
               ),
@@ -277,7 +308,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Don't have an account? ", style: TextStyle(color: AppColors.textSecondary)),
+        Text(
+          "Don't have an account? ",
+          style: TextStyle(color: AppColors.textSecondary),
+        ),
         GestureDetector(
           onTap: () => Navigator.push(
             context,
@@ -285,7 +319,10 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           child: Text(
             'Sign up',
-            style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: AppColors.primary,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ],
@@ -310,17 +347,64 @@ class _GoogleLogoPainter extends CustomPainter {
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
 
     // Red arc (top-right)
-    canvas.drawArc(rect, -0.52, 1.57, false, Paint()..color = const Color(0xFFEA4335)..style = PaintingStyle.stroke..strokeWidth = size.width * 0.2..strokeCap = StrokeCap.butt);
+    canvas.drawArc(
+      rect,
+      -0.52,
+      1.57,
+      false,
+      Paint()
+        ..color = const Color(0xFFEA4335)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.2
+        ..strokeCap = StrokeCap.butt,
+    );
     // Blue arc (top-left + bottom-left)
-    canvas.drawArc(rect, 1.05, 2.62, false, Paint()..color = const Color(0xFF4285F4)..style = PaintingStyle.stroke..strokeWidth = size.width * 0.2..strokeCap = StrokeCap.butt);
+    canvas.drawArc(
+      rect,
+      1.05,
+      2.62,
+      false,
+      Paint()
+        ..color = const Color(0xFF4285F4)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.2
+        ..strokeCap = StrokeCap.butt,
+    );
     // Yellow arc (bottom-right)
-    canvas.drawArc(rect, -2.09, 1.57, false, Paint()..color = const Color(0xFFFBBC05)..style = PaintingStyle.stroke..strokeWidth = size.width * 0.2..strokeCap = StrokeCap.butt);
+    canvas.drawArc(
+      rect,
+      -2.09,
+      1.57,
+      false,
+      Paint()
+        ..color = const Color(0xFFFBBC05)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.2
+        ..strokeCap = StrokeCap.butt,
+    );
     // Green arc (bottom-right)
-    canvas.drawArc(rect, -0.52, -1.57, false, Paint()..color = const Color(0xFF34A853)..style = PaintingStyle.stroke..strokeWidth = size.width * 0.2..strokeCap = StrokeCap.butt);
+    canvas.drawArc(
+      rect,
+      -0.52,
+      -1.57,
+      false,
+      Paint()
+        ..color = const Color(0xFF34A853)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = size.width * 0.2
+        ..strokeCap = StrokeCap.butt,
+    );
 
     // Horizontal bar of the G
-    final barPaint = Paint()..color = const Color(0xFF4285F4)..strokeWidth = size.height * 0.18..strokeCap = StrokeCap.round;
-    canvas.drawLine(Offset(size.width * 0.55, size.height * 0.5), Offset(size.width, size.height * 0.5), barPaint);
+    final barPaint = Paint()
+      ..color = const Color(0xFF4285F4)
+      ..strokeWidth = size.height * 0.18
+      ..strokeCap = StrokeCap.round;
+    canvas.drawLine(
+      Offset(size.width * 0.55, size.height * 0.5),
+      Offset(size.width, size.height * 0.5),
+      barPaint,
+    );
   }
 
   @override

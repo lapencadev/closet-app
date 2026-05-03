@@ -33,10 +33,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!_formKey.currentState!.validate()) return;
     setState(() => _isLoading = true);
     try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text,
-      );
+      final credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: _emailController.text.trim(),
+            password: _passwordController.text,
+          );
       await credential.user?.updateDisplayName(_nameController.text.trim());
       // AuthWrapper handles navigation automatically via authStateChanges stream
     } on FirebaseAuthException catch (e) {
@@ -113,7 +114,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               prefixIcon: Icon(Icons.person_outline),
               border: OutlineInputBorder(),
             ),
-            validator: (v) => (v == null || v.trim().isEmpty) ? 'Name is required' : null,
+            validator: (v) =>
+                (v == null || v.trim().isEmpty) ? 'Name is required' : null,
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -142,8 +144,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               border: const OutlineInputBorder(),
               helperText: 'At least 6 characters',
               suffixIcon: IconButton(
-                icon: Icon(_obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                icon: Icon(
+                  _obscurePassword
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                ),
+                onPressed: () =>
+                    setState(() => _obscurePassword = !_obscurePassword),
               ),
             ),
             validator: (v) {
@@ -163,13 +170,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
               prefixIcon: const Icon(Icons.lock_outlined),
               border: const OutlineInputBorder(),
               suffixIcon: IconButton(
-                icon: Icon(_obscureConfirm ? Icons.visibility_outlined : Icons.visibility_off_outlined),
-                onPressed: () => setState(() => _obscureConfirm = !_obscureConfirm),
+                icon: Icon(
+                  _obscureConfirm
+                      ? Icons.visibility_outlined
+                      : Icons.visibility_off_outlined,
+                ),
+                onPressed: () =>
+                    setState(() => _obscureConfirm = !_obscureConfirm),
               ),
             ),
             validator: (v) {
               if (v == null || v.isEmpty) return 'Please confirm your password';
-              if (v != _passwordController.text) return 'Passwords do not match';
+              if (v != _passwordController.text)
+                return 'Passwords do not match';
               return null;
             },
           ),
@@ -186,15 +199,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
         onPressed: _isLoading ? null : _register,
         style: FilledButton.styleFrom(
           backgroundColor: AppColors.primary,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
         ),
         child: _isLoading
             ? const SizedBox(
                 width: 22,
                 height: 22,
-                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2.5,
+                ),
               )
-            : const Text('Create account', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            : const Text(
+                'Create account',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              ),
       ),
     );
   }
@@ -204,12 +225,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Already have an account? ', style: TextStyle(color: AppColors.textSecondary)),
+          Text(
+            'Already have an account? ',
+            style: TextStyle(color: AppColors.textSecondary),
+          ),
           GestureDetector(
             onTap: () => Navigator.pop(context),
             child: Text(
               'Sign in',
-              style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                color: AppColors.primary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],

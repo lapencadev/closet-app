@@ -10,18 +10,59 @@ import 'package:mobile/utils/app_colors.dart';
 // ── Enum data ────────────────────────────────────────────────────────────────
 
 const List<String> _types = [
-  'Shirt', 'Pant', 'Dress', 'Jacket', 'Skirt',
-  'Jumper', 'Swimsuit', 'Footwear', 'Accessory',
+  'Shirt',
+  'Pant',
+  'Dress',
+  'Jacket',
+  'Skirt',
+  'Jumper',
+  'Swimsuit',
+  'Footwear',
+  'Accessory',
 ];
 
 const List<String> _colours = [
-  'BLACK', 'WHITE', 'GREY', 'CHARCOAL', 'IVORY', 'CREAM', 'BEIGE', 'SAND',
-  'BROWN', 'KHAKI', 'OLIVE', 'COPPER',
-  'RED', 'MAROON', 'BURGUNDY', 'CORAL', 'PINK', 'BLUSH', 'ROSE', 'FUCHSIA', 'MAGENTA',
-  'ORANGE', 'AMBER', 'GOLD', 'MUSTARD', 'YELLOW', 'PEACH', 'LIME',
-  'GREEN', 'MINT', 'TEAL', 'EMERALD',
-  'BLUE', 'NAVY_BLUE', 'COBALT', 'INDIGO', 'CYAN', 'TURQUOISE',
-  'PURPLE', 'LAVENDER', 'LILAC',
+  'BLACK',
+  'WHITE',
+  'GREY',
+  'CHARCOAL',
+  'IVORY',
+  'CREAM',
+  'BEIGE',
+  'SAND',
+  'BROWN',
+  'KHAKI',
+  'OLIVE',
+  'COPPER',
+  'RED',
+  'MAROON',
+  'BURGUNDY',
+  'CORAL',
+  'PINK',
+  'BLUSH',
+  'ROSE',
+  'FUCHSIA',
+  'MAGENTA',
+  'ORANGE',
+  'AMBER',
+  'GOLD',
+  'MUSTARD',
+  'YELLOW',
+  'PEACH',
+  'LIME',
+  'GREEN',
+  'MINT',
+  'TEAL',
+  'EMERALD',
+  'BLUE',
+  'NAVY_BLUE',
+  'COBALT',
+  'INDIGO',
+  'CYAN',
+  'TURQUOISE',
+  'PURPLE',
+  'LAVENDER',
+  'LILAC',
   'SILVER',
 ];
 
@@ -70,8 +111,24 @@ const Map<String, Color> _colourSwatches = {
   'SILVER': Color(0xFFC0C0C0),
 };
 
-const List<String> _seasons = ['SPRING', 'SUMMER', 'AUTUMN', 'WINTER', 'ALL_SEASONS'];
-const List<String> _sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'ONE_SIZE', 'CUSTOM'];
+const List<String> _seasons = [
+  'SPRING',
+  'SUMMER',
+  'AUTUMN',
+  'WINTER',
+  'ALL_SEASONS',
+];
+const List<String> _sizes = [
+  'XS',
+  'S',
+  'M',
+  'L',
+  'XL',
+  'XXL',
+  'XXXL',
+  'ONE_SIZE',
+  'CUSTOM',
+];
 const List<String> _sleeveLengths = ['SHORT', 'MEDIUM', 'LONG'];
 const Set<String> _typesWithSleeves = {'Shirt', 'Dress', 'Jumper', 'Jacket'};
 
@@ -81,7 +138,11 @@ String _fmt(String v) {
   if (v.startsWith('SIZE_')) return v.substring(5);
   return v
       .split('_')
-      .map((w) => w.isEmpty ? '' : '${w[0].toUpperCase()}${w.substring(1).toLowerCase()}')
+      .map(
+        (w) => w.isEmpty
+            ? ''
+            : '${w[0].toUpperCase()}${w.substring(1).toLowerCase()}',
+      )
       .join(' ');
 }
 
@@ -159,8 +220,14 @@ class _AddItemScreenState extends State<AddItemScreen> {
               ),
               if (_image != null)
                 ListTile(
-                  leading: const Icon(Icons.delete_outline, color: AppColors.error),
-                  title: const Text('Remove photo', style: TextStyle(color: AppColors.error)),
+                  leading: const Icon(
+                    Icons.delete_outline,
+                    color: AppColors.error,
+                  ),
+                  title: const Text(
+                    'Remove photo',
+                    style: TextStyle(color: AppColors.error),
+                  ),
                   onTap: () {
                     Navigator.pop(ctx);
                     setState(() => _image = null);
@@ -191,19 +258,26 @@ class _AddItemScreenState extends State<AddItemScreen> {
       final analysis = await _aiService.analyzeClothing(_image!);
       if (!mounted) return;
       setState(() {
-        if (analysis.name?.isNotEmpty == true) _nameController.text = analysis.name!;
-        if (analysis.type != null && _types.contains(analysis.type)) _type = analysis.type!;
+        if (analysis.name?.isNotEmpty == true)
+          _nameController.text = analysis.name!;
+        if (analysis.type != null && _types.contains(analysis.type))
+          _type = analysis.type!;
         if (analysis.colour != null && _colours.contains(analysis.colour)) {
           _colour = analysis.colour;
           _colourFieldKey.currentState?.didChange(_colour);
         }
-        if (analysis.season != null && _seasons.contains(analysis.season)) _season = analysis.season;
-        if (analysis.sleeveLength != null && _sleeveLengths.contains(analysis.sleeveLength)) {
+        if (analysis.season != null && _seasons.contains(analysis.season))
+          _season = analysis.season;
+        if (analysis.sleeveLength != null &&
+            _sleeveLengths.contains(analysis.sleeveLength)) {
           _sleeveLength = analysis.sleeveLength;
         }
-        if (analysis.fabricType?.isNotEmpty == true) _fabricController.text = analysis.fabricType!;
-        if (analysis.pattern?.isNotEmpty == true) _patternController.text = analysis.pattern!;
-        if (analysis.description?.isNotEmpty == true) _descriptionController.text = analysis.description!;
+        if (analysis.fabricType?.isNotEmpty == true)
+          _fabricController.text = analysis.fabricType!;
+        if (analysis.pattern?.isNotEmpty == true)
+          _patternController.text = analysis.pattern!;
+        if (analysis.description?.isNotEmpty == true)
+          _descriptionController.text = analysis.description!;
       });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -234,18 +308,29 @@ class _AddItemScreenState extends State<AddItemScreen> {
         size: _size,
         imagePath: _image?.path,
         isFavorite: _isFavourite,
-        brand: _brandController.text.trim().isEmpty ? null : _brandController.text.trim(),
-        description: _descriptionController.text.trim().isEmpty ? null : _descriptionController.text.trim(),
+        brand: _brandController.text.trim().isEmpty
+            ? null
+            : _brandController.text.trim(),
+        description: _descriptionController.text.trim().isEmpty
+            ? null
+            : _descriptionController.text.trim(),
         sleeveLength: _sleeveLength,
-        fabricType: _fabricController.text.trim().isEmpty ? null : _fabricController.text.trim(),
-        pattern: _patternController.text.trim().isEmpty ? null : _patternController.text.trim(),
+        fabricType: _fabricController.text.trim().isEmpty
+            ? null
+            : _fabricController.text.trim(),
+        pattern: _patternController.text.trim().isEmpty
+            ? null
+            : _patternController.text.trim(),
       );
       await db.into(db.items).insert(model.toCompanion());
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error saving: $e'), backgroundColor: AppColors.error),
+          SnackBar(
+            content: Text('Error saving: $e'),
+            backgroundColor: AppColors.error,
+          ),
         );
       }
     } finally {
@@ -273,7 +358,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
                   )
                 : TextButton(
                     onPressed: _save,
-                    child: const Text('Save', style: TextStyle(fontWeight: FontWeight.bold)),
+                    child: const Text(
+                      'Save',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
           ),
         ],
@@ -285,48 +373,55 @@ class _AddItemScreenState extends State<AddItemScreen> {
           children: [
             _buildImagePicker(),
             const SizedBox(height: 16),
-            _buildSection(
-              'Basic Info',
-              [
-                _buildNameField(),
-                const SizedBox(height: 12),
-                _buildTypeSelector(),
-                const SizedBox(height: 12),
-                _buildTextField(_brandController, 'Brand', hint: 'e.g. Zara, H&M'),
-              ],
-            ),
+            _buildSection('Basic Info', [
+              _buildNameField(),
+              const SizedBox(height: 12),
+              _buildTypeSelector(),
+              const SizedBox(height: 12),
+              _buildTextField(
+                _brandController,
+                'Brand',
+                hint: 'e.g. Zara, H&M',
+              ),
+            ]),
             const SizedBox(height: 16),
-            _buildSection(
-              'Appearance',
-              [
-                _buildColourDropdown(),
-                const SizedBox(height: 12),
-                _buildSizeDropdown(),
+            _buildSection('Appearance', [
+              _buildColourDropdown(),
+              const SizedBox(height: 12),
+              _buildSizeDropdown(),
+              const SizedBox(height: 16),
+              _buildLabel('Season'),
+              const SizedBox(height: 8),
+              _buildSeasonChips(),
+              if (_typesWithSleeves.contains(_type)) ...[
                 const SizedBox(height: 16),
-                _buildLabel('Season'),
+                _buildLabel('Sleeve length'),
                 const SizedBox(height: 8),
-                _buildSeasonChips(),
-                if (_typesWithSleeves.contains(_type)) ...[
-                  const SizedBox(height: 16),
-                  _buildLabel('Sleeve length'),
-                  const SizedBox(height: 8),
-                  _buildSleeveLengthChips(),
-                ],
-                const SizedBox(height: 12),
-                _buildTextField(_fabricController, 'Fabric type', hint: 'e.g. cotton, denim, silk'),
-                const SizedBox(height: 12),
-                _buildTextField(_patternController, 'Pattern', hint: 'e.g. solid, striped, floral'),
+                _buildSleeveLengthChips(),
               ],
-            ),
+              const SizedBox(height: 12),
+              _buildTextField(
+                _fabricController,
+                'Fabric type',
+                hint: 'e.g. cotton, denim, silk',
+              ),
+              const SizedBox(height: 12),
+              _buildTextField(
+                _patternController,
+                'Pattern',
+                hint: 'e.g. solid, striped, floral',
+              ),
+            ]),
             const SizedBox(height: 16),
-            _buildSection(
-              'Notes',
-              [
-                _buildTextField(_descriptionController, 'Description', maxLines: 3),
-                const SizedBox(height: 12),
-                _buildFavouriteToggle(),
-              ],
-            ),
+            _buildSection('Notes', [
+              _buildTextField(
+                _descriptionController,
+                'Description',
+                maxLines: 3,
+              ),
+              const SizedBox(height: 12),
+              _buildFavouriteToggle(),
+            ]),
             const SizedBox(height: 32),
           ],
         ),
@@ -352,11 +447,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 fit: StackFit.expand,
                 children: [
                   Image.file(_image!, fit: BoxFit.cover),
-                  Positioned(
-                    top: 8,
-                    right: 8,
-                    child: _buildAIButton(),
-                  ),
+                  Positioned(top: 8, right: 8, child: _buildAIButton()),
                   Positioned(
                     bottom: 8,
                     right: 8,
@@ -367,11 +458,18 @@ class _AddItemScreenState extends State<AddItemScreen> {
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.add_a_photo_outlined, size: 48, color: AppColors.greyMedium),
+                  Icon(
+                    Icons.add_a_photo_outlined,
+                    size: 48,
+                    color: AppColors.greyMedium,
+                  ),
                   const SizedBox(height: 8),
                   Text(
                     'Add a photo',
-                    style: TextStyle(color: AppColors.textSecondary, fontSize: 15),
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 15,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Text(
@@ -398,10 +496,16 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 SizedBox(
                   width: 14,
                   height: 14,
-                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
                 ),
                 SizedBox(width: 8),
-                Text('Analyzing…', style: TextStyle(color: Colors.white, fontSize: 12)),
+                Text(
+                  'Analyzing…',
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
               ],
             ),
           )
@@ -412,14 +516,27 @@ class _AddItemScreenState extends State<AddItemScreen> {
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 6, offset: Offset(0, 2))],
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 6,
+                    offset: Offset(0, 2),
+                  ),
+                ],
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.auto_awesome, color: Colors.white, size: 14),
                   SizedBox(width: 6),
-                  Text('Auto-fill with AI', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600)),
+                  Text(
+                    'Auto-fill with AI',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -457,7 +574,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
             const SizedBox(height: 16),
             ...children,
           ],
@@ -467,7 +587,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
   }
 
   Widget _buildLabel(String text) {
-    return Text(text, style: TextStyle(color: AppColors.textSecondary, fontSize: 13));
+    return Text(
+      text,
+      style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
+    );
   }
 
   Widget _buildNameField() {
@@ -479,7 +602,8 @@ class _AddItemScreenState extends State<AddItemScreen> {
         hintText: 'e.g. Black Crew-Neck T-Shirt',
         border: OutlineInputBorder(),
       ),
-      validator: (v) => (v == null || v.trim().isEmpty) ? 'Name is required' : null,
+      validator: (v) =>
+          (v == null || v.trim().isEmpty) ? 'Name is required' : null,
     );
   }
 
@@ -536,7 +660,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
     return DropdownButtonFormField<String>(
       key: _colourFieldKey,
       initialValue: _colour,
-      decoration: const InputDecoration(labelText: 'Colour', border: OutlineInputBorder()),
+      decoration: const InputDecoration(
+        labelText: 'Colour',
+        border: OutlineInputBorder(),
+      ),
       hint: const Text('Select colour'),
       isExpanded: true,
       items: _colours.map((c) {
@@ -552,7 +679,9 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 decoration: BoxDecoration(
                   color: swatch,
                   shape: BoxShape.circle,
-                  border: Border.all(color: isLight ? AppColors.greyMedium : Colors.transparent),
+                  border: Border.all(
+                    color: isLight ? AppColors.greyMedium : Colors.transparent,
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -569,7 +698,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
     return DropdownButtonFormField<String>(
       key: _sizeFieldKey,
       initialValue: _size,
-      decoration: const InputDecoration(labelText: 'Size', border: OutlineInputBorder()),
+      decoration: const InputDecoration(
+        labelText: 'Size',
+        border: OutlineInputBorder(),
+      ),
       hint: const Text('Select size'),
       items: _sizes
           .map((s) => DropdownMenuItem(value: s, child: Text(_fmt(s))))
@@ -606,7 +738,8 @@ class _AddItemScreenState extends State<AddItemScreen> {
         return ChoiceChip(
           label: Text(_fmt(s)),
           selected: selected,
-          onSelected: (_) => setState(() => _sleeveLength = selected ? null : s),
+          onSelected: (_) =>
+              setState(() => _sleeveLength = selected ? null : s),
           selectedColor: AppColors.primaryLight.withValues(alpha: 0.35),
           labelStyle: TextStyle(
             color: selected ? AppColors.primary : AppColors.textSecondary,

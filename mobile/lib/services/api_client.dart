@@ -72,7 +72,12 @@ class ApiClient {
     String message;
     try {
       final body = jsonDecode(response.body) as Map<String, dynamic>;
-      message = (body['message'] ?? body['error'] ?? response.reasonPhrase ?? 'Unknown error') as String;
+      message =
+          (body['message'] ??
+                  body['error'] ??
+                  response.reasonPhrase ??
+                  'Unknown error')
+              as String;
     } catch (_) {
       message = response.reasonPhrase ?? 'Unknown error';
     }

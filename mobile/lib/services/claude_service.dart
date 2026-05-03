@@ -65,30 +65,28 @@ class ClaudeService {
               {
                 'parts': [
                   {
-                    'inline_data': {
-                      'mime_type': mimeType,
-                      'data': base64Image,
-                    },
+                    'inline_data': {'mime_type': mimeType, 'data': base64Image},
                   },
                   {'text': _prompt},
                 ],
               },
             ],
-            'generationConfig': {
-              'maxOutputTokens': 512,
-              'temperature': 0.1,
-            },
+            'generationConfig': {'maxOutputTokens': 512, 'temperature': 0.1},
           }),
         )
         .timeout(const Duration(seconds: 30));
 
     if (response.statusCode != 200) {
-      throw Exception('Gemini API error ${response.statusCode}: ${response.body}');
+      throw Exception(
+        'Gemini API error ${response.statusCode}: ${response.body}',
+      );
     }
 
     final data = jsonDecode(response.body) as Map<String, dynamic>;
     final content =
-        ((data['candidates'] as List).first['content']['parts'] as List).first['text'] as String;
+        ((data['candidates'] as List).first['content']['parts'] as List)
+                .first['text']
+            as String;
 
     final jsonMatch = RegExp(r'\{[\s\S]*\}').firstMatch(content);
     if (jsonMatch == null) throw Exception('Could not parse AI response');
