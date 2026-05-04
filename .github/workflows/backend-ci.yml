@@ -47,4 +47,4 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           cd backend
-          mvn -B package --file pom.xml
+          mvn -B package --file pom.xml -e
