@@ -33,7 +33,8 @@ When the user picks or takes a photo, the image is stored in the app's documents
 - **Drift** – type-safe SQLite wrapper
 - **http** – HTTP client for backend API calls
 - **image_picker** – camera and gallery access
-- **Gemini API** (via `ClaudeService`) – AI clothing analysis from photos
+- **google_generative_ai** – official Gemini SDK for AI clothing analysis from photos
+- **drift_db_viewer** – in-app SQLite browser (debug builds only)
 - **GitHub Actions** – CI (analyze, test, Android build)
 
 ## Project Structure
@@ -52,7 +53,7 @@ lib/
  │    └── add_item_screen.dart
  ├── services/        # database, API client, AI service
  │    ├── api_client.dart       ← authenticated HTTP client
- │    ├── claude_service.dart   ← Gemini AI clothing analysis
+ │    ├── gemini_service.dart   ← Gemini AI clothing analysis
  │    └── closet_database.dart  ← Drift SQLite database
  └── utils/           # theme, colours, API constants
 ```
@@ -98,9 +99,10 @@ Config: `.github/workflows/ci.yml`
 
 - [x] Firebase authentication (email/password + Google Sign-In + password reset)
 - [x] Add clothing items with photo (camera or gallery)
-- [x] AI auto-fill from photo via Gemini
+- [x] AI auto-fill from photo via Gemini (`gemini-3.1-flash-lite-preview`, official SDK)
 - [x] Local SQLite storage (Drift)
 - [x] Authenticated HTTP client (`ApiClient`) ready for backend sync
+- [x] In-app SQLite browser (`drift_db_viewer`, debug builds only — tap the database icon in the AppBar)
 
 ## Planned
 

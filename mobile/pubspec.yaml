@@ -41,6 +41,7 @@ dependencies:
   firebase_auth: ^5.0.0
   google_sign_in: ^6.0.0
   google_generative_ai: ^0.4.0
+  drift_db_viewer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

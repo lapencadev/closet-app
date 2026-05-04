@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:drift_db_viewer/drift_db_viewer.dart';
 import 'package:mobile/screens/add_item_screen.dart';
+import 'package:mobile/services/closet_database.dart';
 import 'package:mobile/utils/app_colors.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -27,6 +30,17 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
+          if (kDebugMode)
+            IconButton(
+              icon: const Icon(Icons.storage_outlined),
+              tooltip: 'DB Viewer',
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => DriftDbViewer(ClosetDatabase()),
+                ),
+              ),
+            ),
           IconButton(
             icon: const Icon(Icons.notifications_none),
             onPressed: () {},
