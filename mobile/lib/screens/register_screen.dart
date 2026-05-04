@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:mobile/utils/app_colors.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -39,7 +40,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             password: _passwordController.text,
           );
       await credential.user?.updateDisplayName(_nameController.text.trim());
-      // AuthWrapper handles navigation automatically via authStateChanges stream
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -65,12 +65,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PlatformScaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
+      appBar: PlatformAppBar(
         title: const Text('Create account'),
-        backgroundColor: AppColors.background,
-        elevation: 0,
+        material: (_, __) => MaterialAppBarData(
+          backgroundColor: AppColors.background,
+          elevation: 0,
+        ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -208,10 +210,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ? const SizedBox(
                 width: 22,
                 height: 22,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2.5,
-                ),
+                child: PlatformCircularProgressIndicator(),
               )
             : const Text(
                 'Create account',

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobile/screens/register_screen.dart';
 import 'package:mobile/utils/app_colors.dart';
@@ -47,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isGoogleLoading = true);
     try {
       final googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return; // user cancelled
+      if (googleUser == null) return;
 
       final googleAuth = await googleUser.authentication;
       final credential = GoogleAuthProvider.credential(
@@ -107,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PlatformScaffold(
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Center(
@@ -228,10 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ? const SizedBox(
                 width: 22,
                 height: 22,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2.5,
-                ),
+                child: PlatformCircularProgressIndicator(),
               )
             : const Text(
                 'Sign in',
@@ -242,7 +240,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildForgotPassword() {
-    return TextButton(
+    return PlatformTextButton(
       onPressed: _forgotPassword,
       child: Text(
         'Forgot your password?',
@@ -283,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ? const SizedBox(
                 width: 22,
                 height: 22,
-                child: CircularProgressIndicator(strokeWidth: 2.5),
+                child: PlatformCircularProgressIndicator(),
               )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -315,7 +313,10 @@ class _LoginScreenState extends State<LoginScreen> {
         GestureDetector(
           onTap: () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (_) => const RegisterScreen()),
+            platformPageRoute(
+              context: context,
+              builder: (_) => const RegisterScreen(),
+            ),
           ),
           child: Text(
             'Sign up',
@@ -346,7 +347,6 @@ class _GoogleLogoPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final rect = Rect.fromLTWH(0, 0, size.width, size.height);
 
-    // Red arc (top-right)
     canvas.drawArc(
       rect,
       -0.52,
@@ -358,7 +358,6 @@ class _GoogleLogoPainter extends CustomPainter {
         ..strokeWidth = size.width * 0.2
         ..strokeCap = StrokeCap.butt,
     );
-    // Blue arc (top-left + bottom-left)
     canvas.drawArc(
       rect,
       1.05,
@@ -370,7 +369,6 @@ class _GoogleLogoPainter extends CustomPainter {
         ..strokeWidth = size.width * 0.2
         ..strokeCap = StrokeCap.butt,
     );
-    // Yellow arc (bottom-right)
     canvas.drawArc(
       rect,
       -2.09,
@@ -382,7 +380,6 @@ class _GoogleLogoPainter extends CustomPainter {
         ..strokeWidth = size.width * 0.2
         ..strokeCap = StrokeCap.butt,
     );
-    // Green arc (bottom-right)
     canvas.drawArc(
       rect,
       -0.52,
@@ -395,7 +392,6 @@ class _GoogleLogoPainter extends CustomPainter {
         ..strokeCap = StrokeCap.butt,
     );
 
-    // Horizontal bar of the G
     final barPaint = Paint()
       ..color = const Color(0xFF4285F4)
       ..strokeWidth = size.height * 0.18

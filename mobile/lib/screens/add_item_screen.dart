@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/models/item_model.dart';
 import 'package:mobile/services/gemini_service.dart';
@@ -346,90 +347,95 @@ class _AddItemScreenState extends State<AddItemScreen> {
 
   // ── Build ──────────────────────────────────────────────────────────────────
 
+  Widget _buildSaveAction() {
+    if (_isSaving) {
+      return Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: Center(
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: PlatformCircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+    return PlatformTextButton(
+      onPressed: _save,
+      cupertino: (context, _) =>
+          CupertinoTextButtonData(padding: EdgeInsets.zero),
+      child: const Text('Save', style: TextStyle(fontWeight: FontWeight.bold)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
+    return PlatformScaffold(
+      appBar: PlatformAppBar(
         title: const Text('Add Item'),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: _isSaving
-                ? const Center(
-                    child: SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  )
-                : TextButton(
-                    onPressed: _save,
-                    child: const Text(
-                      'Save',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-          ),
-        ],
+        trailingActions: [_buildSaveAction()],
       ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            _buildImagePicker(),
-            const SizedBox(height: 16),
-            _buildSection('Basic Info', [
-              _buildNameField(),
-              const SizedBox(height: 12),
-              _buildTypeSelector(),
-              const SizedBox(height: 12),
-              _buildTextField(
-                _brandController,
-                'Brand',
-                hint: 'e.g. Zara, H&M',
-              ),
-            ]),
-            const SizedBox(height: 16),
-            _buildSection('Appearance', [
-              _buildColourDropdown(),
-              const SizedBox(height: 12),
-              _buildSizeDropdown(),
+      body: Material(
+        color: Colors.transparent,
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              _buildImagePicker(),
               const SizedBox(height: 16),
-              _buildLabel('Season'),
-              const SizedBox(height: 8),
-              _buildSeasonChips(),
-              if (_typesWithSleeves.contains(_type)) ...[
+              _buildSection('Basic Info', [
+                _buildNameField(),
+                const SizedBox(height: 12),
+                _buildTypeSelector(),
+                const SizedBox(height: 12),
+                _buildTextField(
+                  _brandController,
+                  'Brand',
+                  hint: 'e.g. Zara, H&M',
+                ),
+              ]),
+              const SizedBox(height: 16),
+              _buildSection('Appearance', [
+                _buildColourDropdown(),
+                const SizedBox(height: 12),
+                _buildSizeDropdown(),
                 const SizedBox(height: 16),
-                _buildLabel('Sleeve length'),
+                _buildLabel('Season'),
                 const SizedBox(height: 8),
-                _buildSleeveLengthChips(),
-              ],
-              const SizedBox(height: 12),
-              _buildTextField(
-                _fabricController,
-                'Fabric type',
-                hint: 'e.g. cotton, denim, silk',
-              ),
-              const SizedBox(height: 12),
-              _buildTextField(
-                _patternController,
-                'Pattern',
-                hint: 'e.g. solid, striped, floral',
-              ),
-            ]),
-            const SizedBox(height: 16),
-            _buildSection('Notes', [
-              _buildTextField(
-                _descriptionController,
-                'Description',
-                maxLines: 3,
-              ),
-              const SizedBox(height: 12),
-              _buildFavouriteToggle(),
-            ]),
-            const SizedBox(height: 32),
-          ],
+                _buildSeasonChips(),
+                if (_typesWithSleeves.contains(_type)) ...[
+                  const SizedBox(height: 16),
+                  _buildLabel('Sleeve length'),
+                  const SizedBox(height: 8),
+                  _buildSleeveLengthChips(),
+                ],
+                const SizedBox(height: 12),
+                _buildTextField(
+                  _fabricController,
+                  'Fabric type',
+                  hint: 'e.g. cotton, denim, silk',
+                ),
+                const SizedBox(height: 12),
+                _buildTextField(
+                  _patternController,
+                  'Pattern',
+                  hint: 'e.g. solid, striped, floral',
+                ),
+              ]),
+              const SizedBox(height: 16),
+              _buildSection('Notes', [
+                _buildTextField(
+                  _descriptionController,
+                  'Description',
+                  maxLines: 3,
+                ),
+                const SizedBox(height: 12),
+                _buildFavouriteToggle(),
+              ]),
+              const SizedBox(height: 32),
+            ],
+          ),
         ),
       ),
     );
@@ -761,10 +767,10 @@ class _AddItemScreenState extends State<AddItemScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const Text('Mark as favourite'),
-        Switch(
+        PlatformSwitch(
           value: _isFavourite,
           onChanged: (v) => setState(() => _isFavourite = v),
-          activeThumbColor: AppColors.primary,
+          activeTrackColor: AppColors.primary,
         ),
       ],
     );
