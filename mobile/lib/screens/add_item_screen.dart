@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/models/item_model.dart';
-import 'package:mobile/services/claude_service.dart';
+import 'package:mobile/services/gemini_service.dart';
 import 'package:mobile/services/closet_database.dart';
 import 'package:mobile/utils/app_colors.dart';
 
@@ -176,7 +176,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
   bool _isSaving = false;
 
   final _picker = ImagePicker();
-  final _aiService = ClaudeService();
+  final _aiService = GeminiService();
 
   @override
   void dispose() {

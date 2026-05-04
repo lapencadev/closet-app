@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:http/http.dart' as http;
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:mobile/config/secrets.dart';
 
 class ClothingAnalysis {
@@ -38,10 +38,7 @@ class ClothingAnalysis {
   }
 }
 
-class ClaudeService {
-  static const String _baseUrl =
-      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
-
+class GeminiService {
   Future<ClothingAnalysis> analyzeClothing(File imageFile) async {
     if (geminiApiKey.isEmpty || geminiApiKey == 'YOUR_GEMINI_API_KEY_HERE') {
       throw Exception(
@@ -51,44 +48,27 @@ class ClaudeService {
       );
     }
 
+    final model = GenerativeModel(
+      model: 'gemini-3.1-flash-lite-preview',
+      apiKey: geminiApiKey,
+      generationConfig: GenerationConfig(
+        maxOutputTokens: 512,
+        temperature: 0.1,
+      ),
+    );
+
     final bytes = await imageFile.readAsBytes();
-    final base64Image = base64Encode(bytes);
     final ext = imageFile.path.split('.').last.toLowerCase();
     final mimeType = ext == 'png' ? 'image/png' : 'image/jpeg';
 
-    final response = await http
-        .post(
-          Uri.parse('$_baseUrl?key=$geminiApiKey'),
-          headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({
-            'contents': [
-              {
-                'parts': [
-                  {
-                    'inline_data': {'mime_type': mimeType, 'data': base64Image},
-                  },
-                  {'text': _prompt},
-                ],
-              },
-            ],
-            'generationConfig': {'maxOutputTokens': 512, 'temperature': 0.1},
-          }),
-        )
-        .timeout(const Duration(seconds: 30));
+    final response = await model.generateContent([
+      Content.multi([TextPart(_prompt), DataPart(mimeType, bytes)]),
+    ]);
 
-    if (response.statusCode != 200) {
-      throw Exception(
-        'Gemini API error ${response.statusCode}: ${response.body}',
-      );
-    }
+    final text = response.text;
+    if (text == null || text.isEmpty) throw Exception('Empty AI response');
 
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-    final content =
-        ((data['candidates'] as List).first['content']['parts'] as List)
-                .first['text']
-            as String;
-
-    final jsonMatch = RegExp(r'\{[\s\S]*\}').firstMatch(content);
+    final jsonMatch = RegExp(r'\{[\s\S]*\}').firstMatch(text);
     if (jsonMatch == null) throw Exception('Could not parse AI response');
 
     return ClothingAnalysis.fromJson(
