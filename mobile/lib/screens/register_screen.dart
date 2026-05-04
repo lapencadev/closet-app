@@ -40,6 +40,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             password: _passwordController.text,
           );
       await credential.user?.updateDisplayName(_nameController.text.trim());
+      await credential.user?.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(

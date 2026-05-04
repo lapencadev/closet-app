@@ -10,6 +10,7 @@ class AuthViewModel extends ChangeNotifier {
 
   User? get user => _user;
   bool get isLoggedIn => _user != null;
+  bool get isEmailVerified => _user?.emailVerified ?? false;
   bool get isInitialized => _initialized;
 
   AuthViewModel() {
@@ -19,6 +20,20 @@ class AuthViewModel extends ChangeNotifier {
       _initialized = true;
       notifyListeners();
     });
+  }
+
+  Future<void> reloadUser() async {
+    await FirebaseAuth.instance.currentUser?.reload();
+    _user = FirebaseAuth.instance.currentUser;
+    notifyListeners();
+  }
+
+  Future<void> sendVerificationEmail() async {
+    await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+  }
+
+  Future<void> signOut() async {
+    await FirebaseAuth.instance.signOut();
   }
 
   @override

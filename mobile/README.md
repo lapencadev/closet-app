@@ -7,6 +7,7 @@ Flutter app for managing your personal wardrobe. Works offline-first with option
 ```
 Flutter App
  ├── Firebase Auth      ← authentication (email/password + Google)
+ ├── AuthViewModel      ← ChangeNotifier, single source of auth truth
  ├── SQLite (Drift)     ← all structured data, local-first
  ├── Local filesystem   ← images stored in app documents directory
  └── ApiClient (HTTP)   ← authenticated requests to Spring Boot backend
@@ -16,11 +17,13 @@ The app works fully offline. Backend sync is used for persistent storage and mul
 
 ### Auth flow
 
-1. User logs in via Firebase Auth (email/password or Google)
-2. `AuthWrapper` listens to `authStateChanges()` and navigates to home or login accordingly
-3. `ApiClient` fetches the Firebase ID token on every request and sends it as `Authorization: Bearer <token>`
-4. The backend validates the token and creates the user record on first request (lazy, via `findOrCreate`)
-5. On logout, `FirebaseAuth.signOut()` triggers `AuthWrapper` to redirect back to login
+1. User registers → Firebase creates account → verification email is sent automatically
+2. `AuthWrapper` (StatefulWidget) listens to `AuthViewModel` via `addListener`
+3. `AuthViewModel` subscribes to `FirebaseAuth.userChanges()` (fires on sign-in, sign-out, and profile updates like `updateDisplayName`)
+4. Routing: not logged in → `LoginScreen` | logged in + unverified → `EmailVerificationScreen` | verified → `MyHomePage`
+5. `EmailVerificationScreen` auto-reloads on app resume (`WidgetsBindingObserver`) to detect verification done in the email client
+6. `ApiClient` fetches the Firebase ID token on every request and sends it as `Authorization: Bearer <token>`
+7. The backend validates the token and creates the user record on first request (lazy, via `findOrCreate`)
 
 ### Image strategy
 
@@ -29,7 +32,9 @@ When the user picks or takes a photo, the image is stored in the app's documents
 ## Tech Stack
 
 - **Flutter** / Dart
-- **Firebase Auth** – authentication (email/password + Google Sign-In)
+- **Firebase Auth** – authentication (email/password + Google Sign-In) + email verification
+- **provider** – state management (`ChangeNotifier` / `ChangeNotifierProvider`)
+- **flutter_platform_widgets** – adaptive Material (Android) + Cupertino (iOS) UI
 - **Drift** – type-safe SQLite wrapper
 - **http** – HTTP client for backend API calls
 - **image_picker** – camera and gallery access
@@ -46,16 +51,22 @@ lib/
  ├── config/          # secrets (API keys, gitignored)
  ├── models/          # data models (ItemModel, LoanModel)
  ├── screens/         # page-level widgets
- │    ├── auth_wrapper.dart
+ │    ├── auth_wrapper.dart           ← routes based on auth + verification state
  │    ├── login_screen.dart
  │    ├── register_screen.dart
+ │    ├── email_verification_screen.dart
  │    ├── home_screen.dart
  │    └── add_item_screen.dart
  ├── services/        # database, API client, AI service
  │    ├── api_client.dart       ← authenticated HTTP client
  │    ├── gemini_service.dart   ← Gemini AI clothing analysis
  │    └── closet_database.dart  ← Drift SQLite database
- └── utils/           # theme, colours, API constants
+ ├── viewmodels/      # ChangeNotifiers (state management)
+ │    └── auth_viewmodel.dart   ← auth state, email verification, sign-out
+ └── utils/           # theme, colours, helpers
+      ├── app_colors.dart
+      ├── app_theme.dart
+      └── glass_container.dart  ← reusable blur/glass morphism widget
 ```
 
 ## Getting Started
@@ -98,6 +109,9 @@ Config: `.github/workflows/ci.yml`
 ## Current Features
 
 - [x] Firebase authentication (email/password + Google Sign-In + password reset)
+- [x] Email verification flow (auto-send on register, verification screen, resend with cooldown, auto-reload on app resume)
+- [x] Platform-adaptive UI — Material on Android, Cupertino on iOS (`flutter_platform_widgets`)
+- [x] Glass morphism design (backdrop blur + semi-transparent surfaces)
 - [x] Add clothing items with photo (camera or gallery)
 - [x] AI auto-fill from photo via Gemini (`gemini-3.1-flash-lite-preview`, official SDK)
 - [x] Local SQLite storage (Drift)

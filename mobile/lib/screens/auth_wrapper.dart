@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:mobile/screens/email_verification_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
 import 'package:mobile/screens/login_screen.dart';
 import 'package:mobile/viewmodels/auth_viewmodel.dart';
@@ -50,8 +51,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
       );
     }
 
-    return auth.isLoggedIn
-        ? const MyHomePage(title: 'My Closet')
-        : const LoginScreen();
+    if (!auth.isLoggedIn) return const LoginScreen();
+    if (!auth.isEmailVerified) return const EmailVerificationScreen();
+    return const MyHomePage(title: 'My Closet');
   }
 }
