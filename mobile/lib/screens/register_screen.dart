@@ -70,7 +70,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: AppColors.background,
       appBar: PlatformAppBar(
         title: const Text('Create account'),
-        material: (_, __) => MaterialAppBarData(
+        material: (_, _) => MaterialAppBarData(
           backgroundColor: AppColors.background,
           elevation: 0,
         ),

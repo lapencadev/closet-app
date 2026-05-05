@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:mobile/screens/auth_wrapper.dart';
@@ -21,8 +20,8 @@ class MyApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [Locale('en'), Locale('es')],
-        material: (_, __) => MaterialAppData(theme: AppTheme.lightTheme),
-        cupertino: (_, __) => CupertinoAppData(
+        material: (_, _) => MaterialAppData(theme: AppTheme.lightTheme),
+        cupertino: (_, _) => CupertinoAppData(
           theme: const CupertinoThemeData(
             primaryColor: AppColors.primary,
             barBackgroundColor: AppColors.surface,
