@@ -54,23 +54,23 @@ class _MyHomePageState extends State<MyHomePage> {
             PlatformIconButton(
               icon: const Icon(Icons.storage_outlined),
               onPressed: _openDbViewer,
-              cupertino: (_, __) =>
+              cupertino: (_, _) =>
                   CupertinoIconButtonData(padding: EdgeInsets.zero),
             ),
           PlatformIconButton(
             icon: const Icon(Icons.notifications_none),
             onPressed: () {},
-            cupertino: (_, __) =>
+            cupertino: (_, _) =>
                 CupertinoIconButtonData(padding: EdgeInsets.zero),
           ),
           PlatformIconButton(
             icon: const Icon(Icons.logout),
             onPressed: () => FirebaseAuth.instance.signOut(),
-            cupertino: (_, __) =>
+            cupertino: (_, _) =>
                 CupertinoIconButtonData(padding: EdgeInsets.zero),
           ),
         ],
-        cupertino: (_, __) => CupertinoNavigationBarData(
+        cupertino: (_, _) => CupertinoNavigationBarData(
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -166,16 +166,16 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
         currentIndex: _selectedIndex,
         itemChanged: (index) => setState(() => _selectedIndex = index),
-        material: (_, __) => MaterialNavBarData(
+        material: (_, _) => MaterialNavBarData(
           selectedItemColor: AppColors.primary,
           unselectedItemColor: AppColors.textSecondary,
         ),
-        cupertino: (_, __) => CupertinoTabBarData(
+        cupertino: (_, _) => CupertinoTabBarData(
           activeColor: AppColors.primary,
           inactiveColor: AppColors.textSecondary,
         ),
       ),
-      material: (_, __) => MaterialScaffoldData(
+      material: (_, _) => MaterialScaffoldData(
         floatingActionButton: FloatingActionButton(
           onPressed: _navigateToAddItem,
           backgroundColor: AppColors.primary,
