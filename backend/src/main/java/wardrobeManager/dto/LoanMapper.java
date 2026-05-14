@@ -17,7 +17,9 @@ public class LoanMapper {
                 .borrowerName(loan.getBorrowerName())
                 .dateLoaned(loan.getDateLoaned())
                 .dateReturned(loan.getDateReturned())
+                .expectedReturnDate(loan.getExpectedReturnDate())
                 .isReturned(loan.getIsReturned())
+                .notes(loan.getNotes())
                 .build();
     }
 }

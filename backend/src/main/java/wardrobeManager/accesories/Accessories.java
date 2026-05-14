@@ -1,16 +1,19 @@
 package wardrobeManager.accesories;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import wardrobeManager.item.Item;
+import wardrobeManager.util.AccessoryType;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "accessories")
-public abstract class Accessories extends Item {
+public class Accessories extends Item {
+    @Enumerated(EnumType.STRING)
+    private AccessoryType type;
     private String material;
 }

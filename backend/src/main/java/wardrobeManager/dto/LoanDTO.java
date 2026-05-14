@@ -16,6 +16,8 @@ public class LoanDTO {
     private String borrowerName;
     private LocalDate dateLoaned;
     private LocalDate dateReturned;
+    private LocalDate expectedReturnDate;
     private Boolean isReturned;
+    private String notes;
 }
 

@@ -30,6 +30,9 @@ abstract public class Item extends AuditableEntity {
     private Colours colour;
 
     @Enumerated(EnumType.STRING)
+    private Colours secondaryColour;
+
+    @Enumerated(EnumType.STRING)
     private Season season;
 
     @Enumerated(EnumType.STRING)

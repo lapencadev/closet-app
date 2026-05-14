@@ -16,11 +16,16 @@ public class ItemMapper {
                 .name(item.getName())
                 .type(getItemType(item))
                 .colour(enumToString(item.getColour()))
+                .secondaryColour(enumToString(item.getSecondaryColour()))
                 .season(enumToString(item.getSeason()))
                 .size(enumToString(item.getSize()))
                 .imagePath(item.getImageUrl())
                 .isFavorite(item.isFavourite())
+                .isBorrowed(item.isBorrowed())
+                .isVisible(item.isVisible)
                 .wardrobeId(item.getWardrobe() != null ? item.getWardrobe().getId() : null)
+                .brand(item.getBrand())
+                .description(item.getDescription())
                 .build();
     }
 

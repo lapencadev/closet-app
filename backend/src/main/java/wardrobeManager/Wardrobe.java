@@ -35,6 +35,8 @@ public class Wardrobe extends AuditableEntity {
 
     private boolean isVisible;
 
+    private boolean isAutoFavourites;
+
     @ManyToOne
     @JoinColumn(name="user_id", nullable = false)
     private User user;

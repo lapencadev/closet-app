@@ -1,9 +1,12 @@
 package wardrobeManager.clothes.subclases;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import lombok.*;
 import wardrobeManager.clothes.Clothes;
+import wardrobeManager.util.Length;
 
 @Getter
 @Setter
@@ -13,6 +16,7 @@ import wardrobeManager.clothes.Clothes;
 @Builder
 @Table(name = "skirts")
 public class Skirt extends Clothes {
-    private String sleeveLength;
-    private String fitType;
+    @Enumerated(EnumType.STRING)
+    private Length length;
+    private String style;
 }

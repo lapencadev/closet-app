@@ -21,8 +21,10 @@ public class Loan extends AuditableEntity {
 
     private LocalDate dateLoaned;
     private LocalDate dateReturned;
+    private LocalDate expectedReturnDate;
     private Boolean isReturned;
     private String borrowerName;
+    private String notes;
 
     @ManyToOne
     @JoinColumn(name="item_id", nullable = false)

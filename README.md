@@ -42,9 +42,11 @@ closet-app/
 2. ✅ AI clothing analysis (Gemini)
 3. ✅ Firebase authentication + email verification + backend user sync
 4. ✅ Platform-adaptive UI (Material + Cupertino) with glass morphism design
-5. Load wardrobe items from backend
-6. Filters, search & loan tracking
-7. Backup / export
+5. ✅ Centralized feedback widget (AppFeedback) + constants system
+6. Home with real wardrobes from local DB (Drift)
+7. Filters, search & loan tracking
+8. Backend sync
+9. Backup / export
 
 ## 🔐 Privacy
 

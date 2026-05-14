@@ -60,7 +60,14 @@ backend/
            ├── admin/
            │    ├── TestFirebaseConfig.java       ← mock FirebaseAuth for tests
            │    └── security/FirebaseTokenFilterTest.java
-           └── user/UserServiceTest.java
+           ├── user/UserServiceTest.java
+           └── wardrobeManager/
+                ├── WardrobeTest.java
+                ├── accesories/AccessoriesTest.java
+                ├── clothes/subclases/JumperTest.java
+                ├── dto/ItemMapperTest.java, LoanMapperTest.java
+                ├── item/ItemTest.java
+                └── loan/LoanTest.java
 ```
 
 ## Setup
@@ -137,8 +144,35 @@ Every protected endpoint receives the authenticated `User` via `@AuthenticationP
 |--------|------|-------------|
 | GET | `/api/users/me` | Returns the authenticated user |
 
+> Phase 2 endpoints (Item, Loan, Wardrobe controllers) are planned — see `docs/PHASE_2_PLAN.md`.
+
+## Models (v1.6.4+)
+
+Core models aligned with mobile app:
+- **Item**: `colour`, `secondaryColour`, `season`, `size`, `imagePath`, `brand`, `isFavourite`, `isBorrowed`, `isVisible`
+- **Clothes**: `fabricType`, `pattern` (subclasses: Shirt, Pant, Dress, Jacket, Skirt, Jumper, Swimsuit, Footwear)
+- **Accessories**: concrete entity with `type` (enum: BAG, BELT, HAT, SCARF, JEWELLERY, SUNGLASSES, WATCH, GLOVES, SOCKS, TIGHTS, BOW_TIE, TIE, BROOCH, HAIR_ACCESSORY, BACKPACK, WALLET)
+- **Loan**: `dateLoaned`, `dateReturned`, `expectedReturnDate`, `isReturned`, `notes`, `borrowerName`
+- **Wardrobe**: `name`, `description`, `location`, `imageUrl`, `isFavourite`, `isAutoFavourites` (for Spotify-like favorites wardrobe)
+
+Enums:
+- **Colours** (20): 18 base + MULTICOLOUR, PATTERNED, ANIMAL_PRINT
+- **AccessoryType** (16): predefined types enum
+- **Season**, **Size**, **Length**
+
+DTOs expose API contracts (ItemDTO, LoanDTO) - separate persistence from API layer.
+
 ## Planned
 
-- [ ] `GET/POST /api/wardrobes` – wardrobe management
-- [ ] `GET/POST /api/items` – item sync from mobile
-- [ ] Image upload endpoint
+**Phase 2 – API Endpoints:**
+- [ ] ItemController (GET/POST/PUT/DELETE `/api/items`)
+- [ ] LoanController (GET/POST `/api/loans`, PUT `/api/loans/{id}/return`)
+- [ ] WardrobeController (GET/POST/PUT/DELETE `/api/wardrobes`)
+- [ ] Error handling layer (custom exceptions, validation, HTTP codes)
+- [ ] Integration tests (MockMvc)
+
+**Phase 3+:**
+- [ ] Filters & pagination
+- [ ] Backend sync endpoints
+- [ ] Image upload
+- [ ] Backup/export
