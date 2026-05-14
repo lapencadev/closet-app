@@ -77,16 +77,16 @@ class GeminiService {
   }
 
   static const String _prompt = '''
-Analyze this clothing item image. Return ONLY a JSON object (no markdown, no explanation).
+Analyze this clothing item image. Return ONLY a JSON object (no markdown, no explanation). Use exactly the values provided.
 
 {
-  "name": "descriptive item name e.g. 'Black Short-Sleeve T-Shirt'",
-  "type": "one of: Shirt, Pant, Dress, Jacket, Skirt, Jumper, Swimsuit, Footwear, Accessory",
-  "colour": "one of: RED, GREEN, BLUE, BLACK, WHITE, NAVY_BLUE, GOLD, LAVENDER, MINT, ORANGE, YELLOW, PURPLE, PINK, BROWN, GREY, BEIGE, CREAM, TEAL, CORAL, TURQUOISE, MAGENTA, OLIVE, MAROON, SILVER, COPPER, LILAC, PEACH, KHAKI, MUSTARD, BURGUNDY, INDIGO, CYAN, LIME, ROSE, FUCHSIA, AMBER, CHARCOAL, IVORY, SAND, BLUSH, COBALT, EMERALD",
+  "name": "descriptive item name e.g. 'Blue Denim Jacket'",
+  "type": "one of: SHIRT, PANT, DRESS, JACKET, SKIRT, JUMPER, SWIMSUIT, FOOTWEAR, BAG, BELT, HAT, SCARF, JEWELLERY, SUNGLASSES, WATCH, GLOVES, SOCKS, TIGHTS, BOW_TIE, TIE, BROOCH, HAIR_ACCESSORY, BACKPACK, WALLET",
+  "colour": "one of: BLACK, WHITE, GREY, BEIGE, BROWN, RED, ORANGE, PINK, YELLOW, GREEN, TEAL, BLUE, NAVY_BLUE, PURPLE, LAVENDER, GOLD, SILVER, MULTICOLOUR, PATTERNED, ANIMAL_PRINT",
   "season": "one of: SPRING, SUMMER, AUTUMN, WINTER, ALL_SEASONS",
-  "sleeveLength": "one of: SHORT, MEDIUM, LONG — only for tops/dresses, omit for other types",
+  "sleeveLength": "one of: SHORT, MEDIUM, LONG — only for shirts/dresses/jumpers/jackets, omit otherwise",
   "fabricType": "fabric if identifiable e.g. cotton, denim, silk, wool, polyester, linen",
-  "pattern": "one of: solid, striped, floral, checkered, polka_dots, graphic, animal_print, geometric, abstract — omit if unsure",
+  "pattern": "one brief word describing the pattern e.g. solid, striped, floral, checkered",
   "description": "one brief sentence describing the item"
 }
 

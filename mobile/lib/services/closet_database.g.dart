@@ -43,10 +43,32 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _subTypeMeta = const VerificationMeta(
+    'subType',
+  );
+  @override
+  late final GeneratedColumn<String> subType = GeneratedColumn<String>(
+    'sub_type',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _colourMeta = const VerificationMeta('colour');
   @override
   late final GeneratedColumn<String> colour = GeneratedColumn<String>(
     'colour',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _secondaryColourMeta = const VerificationMeta(
+    'secondaryColour',
+  );
+  @override
+  late final GeneratedColumn<String> secondaryColour = GeneratedColumn<String>(
+    'secondary_colour',
     aliasedName,
     true,
     type: DriftSqlType.string,
@@ -81,32 +103,6 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _isFavoriteMeta = const VerificationMeta(
-    'isFavorite',
-  );
-  @override
-  late final GeneratedColumn<bool> isFavorite = GeneratedColumn<bool>(
-    'is_favorite',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_favorite" IN (0, 1))',
-    ),
-    defaultValue: const Constant(false),
-  );
-  static const VerificationMeta _wardrobeIdMeta = const VerificationMeta(
-    'wardrobeId',
-  );
-  @override
-  late final GeneratedColumn<int> wardrobeId = GeneratedColumn<int>(
-    'wardrobe_id',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
   static const VerificationMeta _brandMeta = const VerificationMeta('brand');
   @override
   late final GeneratedColumn<String> brand = GeneratedColumn<String>(
@@ -125,6 +121,62 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
     aliasedName,
     true,
     type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isFavouriteMeta = const VerificationMeta(
+    'isFavourite',
+  );
+  @override
+  late final GeneratedColumn<bool> isFavourite = GeneratedColumn<bool>(
+    'is_favourite',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_favourite" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _isBorrowedMeta = const VerificationMeta(
+    'isBorrowed',
+  );
+  @override
+  late final GeneratedColumn<bool> isBorrowed = GeneratedColumn<bool>(
+    'is_borrowed',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_borrowed" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _isVisibleMeta = const VerificationMeta(
+    'isVisible',
+  );
+  @override
+  late final GeneratedColumn<bool> isVisible = GeneratedColumn<bool>(
+    'is_visible',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_visible" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _wardrobeIdMeta = const VerificationMeta(
+    'wardrobeId',
+  );
+  @override
+  late final GeneratedColumn<int> wardrobeId = GeneratedColumn<int>(
+    'wardrobe_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
     requiredDuringInsert: false,
   );
   static const VerificationMeta _sleeveLengthMeta = const VerificationMeta(
@@ -165,14 +217,18 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
     id,
     name,
     type,
+    subType,
     colour,
+    secondaryColour,
     season,
     size,
     imagePath,
-    isFavorite,
-    wardrobeId,
     brand,
     description,
+    isFavourite,
+    isBorrowed,
+    isVisible,
+    wardrobeId,
     sleeveLength,
     fabricType,
     pattern,
@@ -208,10 +264,25 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
     } else if (isInserting) {
       context.missing(_typeMeta);
     }
+    if (data.containsKey('sub_type')) {
+      context.handle(
+        _subTypeMeta,
+        subType.isAcceptableOrUnknown(data['sub_type']!, _subTypeMeta),
+      );
+    }
     if (data.containsKey('colour')) {
       context.handle(
         _colourMeta,
         colour.isAcceptableOrUnknown(data['colour']!, _colourMeta),
+      );
+    }
+    if (data.containsKey('secondary_colour')) {
+      context.handle(
+        _secondaryColourMeta,
+        secondaryColour.isAcceptableOrUnknown(
+          data['secondary_colour']!,
+          _secondaryColourMeta,
+        ),
       );
     }
     if (data.containsKey('season')) {
@@ -232,18 +303,6 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
         imagePath.isAcceptableOrUnknown(data['image_path']!, _imagePathMeta),
       );
     }
-    if (data.containsKey('is_favorite')) {
-      context.handle(
-        _isFavoriteMeta,
-        isFavorite.isAcceptableOrUnknown(data['is_favorite']!, _isFavoriteMeta),
-      );
-    }
-    if (data.containsKey('wardrobe_id')) {
-      context.handle(
-        _wardrobeIdMeta,
-        wardrobeId.isAcceptableOrUnknown(data['wardrobe_id']!, _wardrobeIdMeta),
-      );
-    }
     if (data.containsKey('brand')) {
       context.handle(
         _brandMeta,
@@ -257,6 +316,33 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
           data['description']!,
           _descriptionMeta,
         ),
+      );
+    }
+    if (data.containsKey('is_favourite')) {
+      context.handle(
+        _isFavouriteMeta,
+        isFavourite.isAcceptableOrUnknown(
+          data['is_favourite']!,
+          _isFavouriteMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_borrowed')) {
+      context.handle(
+        _isBorrowedMeta,
+        isBorrowed.isAcceptableOrUnknown(data['is_borrowed']!, _isBorrowedMeta),
+      );
+    }
+    if (data.containsKey('is_visible')) {
+      context.handle(
+        _isVisibleMeta,
+        isVisible.isAcceptableOrUnknown(data['is_visible']!, _isVisibleMeta),
+      );
+    }
+    if (data.containsKey('wardrobe_id')) {
+      context.handle(
+        _wardrobeIdMeta,
+        wardrobeId.isAcceptableOrUnknown(data['wardrobe_id']!, _wardrobeIdMeta),
       );
     }
     if (data.containsKey('sleeve_length')) {
@@ -301,9 +387,17 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
         DriftSqlType.string,
         data['${effectivePrefix}type'],
       )!,
+      subType: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sub_type'],
+      ),
       colour: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}colour'],
+      ),
+      secondaryColour: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}secondary_colour'],
       ),
       season: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -317,14 +411,6 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
         DriftSqlType.string,
         data['${effectivePrefix}image_path'],
       ),
-      isFavorite: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}is_favorite'],
-      )!,
-      wardrobeId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}wardrobe_id'],
-      ),
       brand: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}brand'],
@@ -332,6 +418,22 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
       description: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}description'],
+      ),
+      isFavourite: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_favourite'],
+      )!,
+      isBorrowed: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_borrowed'],
+      )!,
+      isVisible: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_visible'],
+      )!,
+      wardrobeId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}wardrobe_id'],
       ),
       sleeveLength: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -358,14 +460,18 @@ class Item extends DataClass implements Insertable<Item> {
   final int id;
   final String name;
   final String type;
+  final String? subType;
   final String? colour;
+  final String? secondaryColour;
   final String? season;
   final String? size;
   final String? imagePath;
-  final bool isFavorite;
-  final int? wardrobeId;
   final String? brand;
   final String? description;
+  final bool isFavourite;
+  final bool isBorrowed;
+  final bool isVisible;
+  final int? wardrobeId;
   final String? sleeveLength;
   final String? fabricType;
   final String? pattern;
@@ -373,14 +479,18 @@ class Item extends DataClass implements Insertable<Item> {
     required this.id,
     required this.name,
     required this.type,
+    this.subType,
     this.colour,
+    this.secondaryColour,
     this.season,
     this.size,
     this.imagePath,
-    required this.isFavorite,
-    this.wardrobeId,
     this.brand,
     this.description,
+    required this.isFavourite,
+    required this.isBorrowed,
+    required this.isVisible,
+    this.wardrobeId,
     this.sleeveLength,
     this.fabricType,
     this.pattern,
@@ -391,8 +501,14 @@ class Item extends DataClass implements Insertable<Item> {
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
     map['type'] = Variable<String>(type);
+    if (!nullToAbsent || subType != null) {
+      map['sub_type'] = Variable<String>(subType);
+    }
     if (!nullToAbsent || colour != null) {
       map['colour'] = Variable<String>(colour);
+    }
+    if (!nullToAbsent || secondaryColour != null) {
+      map['secondary_colour'] = Variable<String>(secondaryColour);
     }
     if (!nullToAbsent || season != null) {
       map['season'] = Variable<String>(season);
@@ -403,15 +519,17 @@ class Item extends DataClass implements Insertable<Item> {
     if (!nullToAbsent || imagePath != null) {
       map['image_path'] = Variable<String>(imagePath);
     }
-    map['is_favorite'] = Variable<bool>(isFavorite);
-    if (!nullToAbsent || wardrobeId != null) {
-      map['wardrobe_id'] = Variable<int>(wardrobeId);
-    }
     if (!nullToAbsent || brand != null) {
       map['brand'] = Variable<String>(brand);
     }
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
+    }
+    map['is_favourite'] = Variable<bool>(isFavourite);
+    map['is_borrowed'] = Variable<bool>(isBorrowed);
+    map['is_visible'] = Variable<bool>(isVisible);
+    if (!nullToAbsent || wardrobeId != null) {
+      map['wardrobe_id'] = Variable<int>(wardrobeId);
     }
     if (!nullToAbsent || sleeveLength != null) {
       map['sleeve_length'] = Variable<String>(sleeveLength);
@@ -430,9 +548,15 @@ class Item extends DataClass implements Insertable<Item> {
       id: Value(id),
       name: Value(name),
       type: Value(type),
+      subType: subType == null && nullToAbsent
+          ? const Value.absent()
+          : Value(subType),
       colour: colour == null && nullToAbsent
           ? const Value.absent()
           : Value(colour),
+      secondaryColour: secondaryColour == null && nullToAbsent
+          ? const Value.absent()
+          : Value(secondaryColour),
       season: season == null && nullToAbsent
           ? const Value.absent()
           : Value(season),
@@ -440,16 +564,18 @@ class Item extends DataClass implements Insertable<Item> {
       imagePath: imagePath == null && nullToAbsent
           ? const Value.absent()
           : Value(imagePath),
-      isFavorite: Value(isFavorite),
-      wardrobeId: wardrobeId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(wardrobeId),
       brand: brand == null && nullToAbsent
           ? const Value.absent()
           : Value(brand),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
+      isFavourite: Value(isFavourite),
+      isBorrowed: Value(isBorrowed),
+      isVisible: Value(isVisible),
+      wardrobeId: wardrobeId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(wardrobeId),
       sleeveLength: sleeveLength == null && nullToAbsent
           ? const Value.absent()
           : Value(sleeveLength),
@@ -471,14 +597,18 @@ class Item extends DataClass implements Insertable<Item> {
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       type: serializer.fromJson<String>(json['type']),
+      subType: serializer.fromJson<String?>(json['subType']),
       colour: serializer.fromJson<String?>(json['colour']),
+      secondaryColour: serializer.fromJson<String?>(json['secondaryColour']),
       season: serializer.fromJson<String?>(json['season']),
       size: serializer.fromJson<String?>(json['size']),
       imagePath: serializer.fromJson<String?>(json['imagePath']),
-      isFavorite: serializer.fromJson<bool>(json['isFavorite']),
-      wardrobeId: serializer.fromJson<int?>(json['wardrobeId']),
       brand: serializer.fromJson<String?>(json['brand']),
       description: serializer.fromJson<String?>(json['description']),
+      isFavourite: serializer.fromJson<bool>(json['isFavourite']),
+      isBorrowed: serializer.fromJson<bool>(json['isBorrowed']),
+      isVisible: serializer.fromJson<bool>(json['isVisible']),
+      wardrobeId: serializer.fromJson<int?>(json['wardrobeId']),
       sleeveLength: serializer.fromJson<String?>(json['sleeveLength']),
       fabricType: serializer.fromJson<String?>(json['fabricType']),
       pattern: serializer.fromJson<String?>(json['pattern']),
@@ -491,14 +621,18 @@ class Item extends DataClass implements Insertable<Item> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'type': serializer.toJson<String>(type),
+      'subType': serializer.toJson<String?>(subType),
       'colour': serializer.toJson<String?>(colour),
+      'secondaryColour': serializer.toJson<String?>(secondaryColour),
       'season': serializer.toJson<String?>(season),
       'size': serializer.toJson<String?>(size),
       'imagePath': serializer.toJson<String?>(imagePath),
-      'isFavorite': serializer.toJson<bool>(isFavorite),
-      'wardrobeId': serializer.toJson<int?>(wardrobeId),
       'brand': serializer.toJson<String?>(brand),
       'description': serializer.toJson<String?>(description),
+      'isFavourite': serializer.toJson<bool>(isFavourite),
+      'isBorrowed': serializer.toJson<bool>(isBorrowed),
+      'isVisible': serializer.toJson<bool>(isVisible),
+      'wardrobeId': serializer.toJson<int?>(wardrobeId),
       'sleeveLength': serializer.toJson<String?>(sleeveLength),
       'fabricType': serializer.toJson<String?>(fabricType),
       'pattern': serializer.toJson<String?>(pattern),
@@ -509,14 +643,18 @@ class Item extends DataClass implements Insertable<Item> {
     int? id,
     String? name,
     String? type,
+    Value<String?> subType = const Value.absent(),
     Value<String?> colour = const Value.absent(),
+    Value<String?> secondaryColour = const Value.absent(),
     Value<String?> season = const Value.absent(),
     Value<String?> size = const Value.absent(),
     Value<String?> imagePath = const Value.absent(),
-    bool? isFavorite,
-    Value<int?> wardrobeId = const Value.absent(),
     Value<String?> brand = const Value.absent(),
     Value<String?> description = const Value.absent(),
+    bool? isFavourite,
+    bool? isBorrowed,
+    bool? isVisible,
+    Value<int?> wardrobeId = const Value.absent(),
     Value<String?> sleeveLength = const Value.absent(),
     Value<String?> fabricType = const Value.absent(),
     Value<String?> pattern = const Value.absent(),
@@ -524,14 +662,20 @@ class Item extends DataClass implements Insertable<Item> {
     id: id ?? this.id,
     name: name ?? this.name,
     type: type ?? this.type,
+    subType: subType.present ? subType.value : this.subType,
     colour: colour.present ? colour.value : this.colour,
+    secondaryColour: secondaryColour.present
+        ? secondaryColour.value
+        : this.secondaryColour,
     season: season.present ? season.value : this.season,
     size: size.present ? size.value : this.size,
     imagePath: imagePath.present ? imagePath.value : this.imagePath,
-    isFavorite: isFavorite ?? this.isFavorite,
-    wardrobeId: wardrobeId.present ? wardrobeId.value : this.wardrobeId,
     brand: brand.present ? brand.value : this.brand,
     description: description.present ? description.value : this.description,
+    isFavourite: isFavourite ?? this.isFavourite,
+    isBorrowed: isBorrowed ?? this.isBorrowed,
+    isVisible: isVisible ?? this.isVisible,
+    wardrobeId: wardrobeId.present ? wardrobeId.value : this.wardrobeId,
     sleeveLength: sleeveLength.present ? sleeveLength.value : this.sleeveLength,
     fabricType: fabricType.present ? fabricType.value : this.fabricType,
     pattern: pattern.present ? pattern.value : this.pattern,
@@ -541,20 +685,28 @@ class Item extends DataClass implements Insertable<Item> {
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       type: data.type.present ? data.type.value : this.type,
+      subType: data.subType.present ? data.subType.value : this.subType,
       colour: data.colour.present ? data.colour.value : this.colour,
+      secondaryColour: data.secondaryColour.present
+          ? data.secondaryColour.value
+          : this.secondaryColour,
       season: data.season.present ? data.season.value : this.season,
       size: data.size.present ? data.size.value : this.size,
       imagePath: data.imagePath.present ? data.imagePath.value : this.imagePath,
-      isFavorite: data.isFavorite.present
-          ? data.isFavorite.value
-          : this.isFavorite,
-      wardrobeId: data.wardrobeId.present
-          ? data.wardrobeId.value
-          : this.wardrobeId,
       brand: data.brand.present ? data.brand.value : this.brand,
       description: data.description.present
           ? data.description.value
           : this.description,
+      isFavourite: data.isFavourite.present
+          ? data.isFavourite.value
+          : this.isFavourite,
+      isBorrowed: data.isBorrowed.present
+          ? data.isBorrowed.value
+          : this.isBorrowed,
+      isVisible: data.isVisible.present ? data.isVisible.value : this.isVisible,
+      wardrobeId: data.wardrobeId.present
+          ? data.wardrobeId.value
+          : this.wardrobeId,
       sleeveLength: data.sleeveLength.present
           ? data.sleeveLength.value
           : this.sleeveLength,
@@ -571,14 +723,18 @@ class Item extends DataClass implements Insertable<Item> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
+          ..write('subType: $subType, ')
           ..write('colour: $colour, ')
+          ..write('secondaryColour: $secondaryColour, ')
           ..write('season: $season, ')
           ..write('size: $size, ')
           ..write('imagePath: $imagePath, ')
-          ..write('isFavorite: $isFavorite, ')
-          ..write('wardrobeId: $wardrobeId, ')
           ..write('brand: $brand, ')
           ..write('description: $description, ')
+          ..write('isFavourite: $isFavourite, ')
+          ..write('isBorrowed: $isBorrowed, ')
+          ..write('isVisible: $isVisible, ')
+          ..write('wardrobeId: $wardrobeId, ')
           ..write('sleeveLength: $sleeveLength, ')
           ..write('fabricType: $fabricType, ')
           ..write('pattern: $pattern')
@@ -591,14 +747,18 @@ class Item extends DataClass implements Insertable<Item> {
     id,
     name,
     type,
+    subType,
     colour,
+    secondaryColour,
     season,
     size,
     imagePath,
-    isFavorite,
-    wardrobeId,
     brand,
     description,
+    isFavourite,
+    isBorrowed,
+    isVisible,
+    wardrobeId,
     sleeveLength,
     fabricType,
     pattern,
@@ -610,14 +770,18 @@ class Item extends DataClass implements Insertable<Item> {
           other.id == this.id &&
           other.name == this.name &&
           other.type == this.type &&
+          other.subType == this.subType &&
           other.colour == this.colour &&
+          other.secondaryColour == this.secondaryColour &&
           other.season == this.season &&
           other.size == this.size &&
           other.imagePath == this.imagePath &&
-          other.isFavorite == this.isFavorite &&
-          other.wardrobeId == this.wardrobeId &&
           other.brand == this.brand &&
           other.description == this.description &&
+          other.isFavourite == this.isFavourite &&
+          other.isBorrowed == this.isBorrowed &&
+          other.isVisible == this.isVisible &&
+          other.wardrobeId == this.wardrobeId &&
           other.sleeveLength == this.sleeveLength &&
           other.fabricType == this.fabricType &&
           other.pattern == this.pattern);
@@ -627,14 +791,18 @@ class ItemsCompanion extends UpdateCompanion<Item> {
   final Value<int> id;
   final Value<String> name;
   final Value<String> type;
+  final Value<String?> subType;
   final Value<String?> colour;
+  final Value<String?> secondaryColour;
   final Value<String?> season;
   final Value<String?> size;
   final Value<String?> imagePath;
-  final Value<bool> isFavorite;
-  final Value<int?> wardrobeId;
   final Value<String?> brand;
   final Value<String?> description;
+  final Value<bool> isFavourite;
+  final Value<bool> isBorrowed;
+  final Value<bool> isVisible;
+  final Value<int?> wardrobeId;
   final Value<String?> sleeveLength;
   final Value<String?> fabricType;
   final Value<String?> pattern;
@@ -642,14 +810,18 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.type = const Value.absent(),
+    this.subType = const Value.absent(),
     this.colour = const Value.absent(),
+    this.secondaryColour = const Value.absent(),
     this.season = const Value.absent(),
     this.size = const Value.absent(),
     this.imagePath = const Value.absent(),
-    this.isFavorite = const Value.absent(),
-    this.wardrobeId = const Value.absent(),
     this.brand = const Value.absent(),
     this.description = const Value.absent(),
+    this.isFavourite = const Value.absent(),
+    this.isBorrowed = const Value.absent(),
+    this.isVisible = const Value.absent(),
+    this.wardrobeId = const Value.absent(),
     this.sleeveLength = const Value.absent(),
     this.fabricType = const Value.absent(),
     this.pattern = const Value.absent(),
@@ -658,14 +830,18 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     this.id = const Value.absent(),
     required String name,
     required String type,
+    this.subType = const Value.absent(),
     this.colour = const Value.absent(),
+    this.secondaryColour = const Value.absent(),
     this.season = const Value.absent(),
     this.size = const Value.absent(),
     this.imagePath = const Value.absent(),
-    this.isFavorite = const Value.absent(),
-    this.wardrobeId = const Value.absent(),
     this.brand = const Value.absent(),
     this.description = const Value.absent(),
+    this.isFavourite = const Value.absent(),
+    this.isBorrowed = const Value.absent(),
+    this.isVisible = const Value.absent(),
+    this.wardrobeId = const Value.absent(),
     this.sleeveLength = const Value.absent(),
     this.fabricType = const Value.absent(),
     this.pattern = const Value.absent(),
@@ -675,14 +851,18 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     Expression<int>? id,
     Expression<String>? name,
     Expression<String>? type,
+    Expression<String>? subType,
     Expression<String>? colour,
+    Expression<String>? secondaryColour,
     Expression<String>? season,
     Expression<String>? size,
     Expression<String>? imagePath,
-    Expression<bool>? isFavorite,
-    Expression<int>? wardrobeId,
     Expression<String>? brand,
     Expression<String>? description,
+    Expression<bool>? isFavourite,
+    Expression<bool>? isBorrowed,
+    Expression<bool>? isVisible,
+    Expression<int>? wardrobeId,
     Expression<String>? sleeveLength,
     Expression<String>? fabricType,
     Expression<String>? pattern,
@@ -691,14 +871,18 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (type != null) 'type': type,
+      if (subType != null) 'sub_type': subType,
       if (colour != null) 'colour': colour,
+      if (secondaryColour != null) 'secondary_colour': secondaryColour,
       if (season != null) 'season': season,
       if (size != null) 'size': size,
       if (imagePath != null) 'image_path': imagePath,
-      if (isFavorite != null) 'is_favorite': isFavorite,
-      if (wardrobeId != null) 'wardrobe_id': wardrobeId,
       if (brand != null) 'brand': brand,
       if (description != null) 'description': description,
+      if (isFavourite != null) 'is_favourite': isFavourite,
+      if (isBorrowed != null) 'is_borrowed': isBorrowed,
+      if (isVisible != null) 'is_visible': isVisible,
+      if (wardrobeId != null) 'wardrobe_id': wardrobeId,
       if (sleeveLength != null) 'sleeve_length': sleeveLength,
       if (fabricType != null) 'fabric_type': fabricType,
       if (pattern != null) 'pattern': pattern,
@@ -709,14 +893,18 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     Value<int>? id,
     Value<String>? name,
     Value<String>? type,
+    Value<String?>? subType,
     Value<String?>? colour,
+    Value<String?>? secondaryColour,
     Value<String?>? season,
     Value<String?>? size,
     Value<String?>? imagePath,
-    Value<bool>? isFavorite,
-    Value<int?>? wardrobeId,
     Value<String?>? brand,
     Value<String?>? description,
+    Value<bool>? isFavourite,
+    Value<bool>? isBorrowed,
+    Value<bool>? isVisible,
+    Value<int?>? wardrobeId,
     Value<String?>? sleeveLength,
     Value<String?>? fabricType,
     Value<String?>? pattern,
@@ -725,14 +913,18 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       id: id ?? this.id,
       name: name ?? this.name,
       type: type ?? this.type,
+      subType: subType ?? this.subType,
       colour: colour ?? this.colour,
+      secondaryColour: secondaryColour ?? this.secondaryColour,
       season: season ?? this.season,
       size: size ?? this.size,
       imagePath: imagePath ?? this.imagePath,
-      isFavorite: isFavorite ?? this.isFavorite,
-      wardrobeId: wardrobeId ?? this.wardrobeId,
       brand: brand ?? this.brand,
       description: description ?? this.description,
+      isFavourite: isFavourite ?? this.isFavourite,
+      isBorrowed: isBorrowed ?? this.isBorrowed,
+      isVisible: isVisible ?? this.isVisible,
+      wardrobeId: wardrobeId ?? this.wardrobeId,
       sleeveLength: sleeveLength ?? this.sleeveLength,
       fabricType: fabricType ?? this.fabricType,
       pattern: pattern ?? this.pattern,
@@ -751,8 +943,14 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     if (type.present) {
       map['type'] = Variable<String>(type.value);
     }
+    if (subType.present) {
+      map['sub_type'] = Variable<String>(subType.value);
+    }
     if (colour.present) {
       map['colour'] = Variable<String>(colour.value);
+    }
+    if (secondaryColour.present) {
+      map['secondary_colour'] = Variable<String>(secondaryColour.value);
     }
     if (season.present) {
       map['season'] = Variable<String>(season.value);
@@ -763,17 +961,23 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     if (imagePath.present) {
       map['image_path'] = Variable<String>(imagePath.value);
     }
-    if (isFavorite.present) {
-      map['is_favorite'] = Variable<bool>(isFavorite.value);
-    }
-    if (wardrobeId.present) {
-      map['wardrobe_id'] = Variable<int>(wardrobeId.value);
-    }
     if (brand.present) {
       map['brand'] = Variable<String>(brand.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
+    }
+    if (isFavourite.present) {
+      map['is_favourite'] = Variable<bool>(isFavourite.value);
+    }
+    if (isBorrowed.present) {
+      map['is_borrowed'] = Variable<bool>(isBorrowed.value);
+    }
+    if (isVisible.present) {
+      map['is_visible'] = Variable<bool>(isVisible.value);
+    }
+    if (wardrobeId.present) {
+      map['wardrobe_id'] = Variable<int>(wardrobeId.value);
     }
     if (sleeveLength.present) {
       map['sleeve_length'] = Variable<String>(sleeveLength.value);
@@ -793,14 +997,18 @@ class ItemsCompanion extends UpdateCompanion<Item> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
+          ..write('subType: $subType, ')
           ..write('colour: $colour, ')
+          ..write('secondaryColour: $secondaryColour, ')
           ..write('season: $season, ')
           ..write('size: $size, ')
           ..write('imagePath: $imagePath, ')
-          ..write('isFavorite: $isFavorite, ')
-          ..write('wardrobeId: $wardrobeId, ')
           ..write('brand: $brand, ')
           ..write('description: $description, ')
+          ..write('isFavourite: $isFavourite, ')
+          ..write('isBorrowed: $isBorrowed, ')
+          ..write('isVisible: $isVisible, ')
+          ..write('wardrobeId: $wardrobeId, ')
           ..write('sleeveLength: $sleeveLength, ')
           ..write('fabricType: $fabricType, ')
           ..write('pattern: $pattern')
@@ -872,6 +1080,17 @@ class $LoansTable extends Loans with TableInfo<$LoansTable, Loan> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _expectedReturnDateMeta =
+      const VerificationMeta('expectedReturnDate');
+  @override
+  late final GeneratedColumn<DateTime> expectedReturnDate =
+      GeneratedColumn<DateTime>(
+        'expected_return_date',
+        aliasedName,
+        true,
+        type: DriftSqlType.dateTime,
+        requiredDuringInsert: false,
+      );
   static const VerificationMeta _isReturnedMeta = const VerificationMeta(
     'isReturned',
   );
@@ -887,6 +1106,15 @@ class $LoansTable extends Loans with TableInfo<$LoansTable, Loan> {
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -894,7 +1122,9 @@ class $LoansTable extends Loans with TableInfo<$LoansTable, Loan> {
     borrowerName,
     dateLoaned,
     dateReturned,
+    expectedReturnDate,
     isReturned,
+    notes,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -947,10 +1177,25 @@ class $LoansTable extends Loans with TableInfo<$LoansTable, Loan> {
         ),
       );
     }
+    if (data.containsKey('expected_return_date')) {
+      context.handle(
+        _expectedReturnDateMeta,
+        expectedReturnDate.isAcceptableOrUnknown(
+          data['expected_return_date']!,
+          _expectedReturnDateMeta,
+        ),
+      );
+    }
     if (data.containsKey('is_returned')) {
       context.handle(
         _isReturnedMeta,
         isReturned.isAcceptableOrUnknown(data['is_returned']!, _isReturnedMeta),
+      );
+    }
+    if (data.containsKey('notes')) {
+      context.handle(
+        _notesMeta,
+        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
       );
     }
     return context;
@@ -982,10 +1227,18 @@ class $LoansTable extends Loans with TableInfo<$LoansTable, Loan> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}date_returned'],
       ),
+      expectedReturnDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}expected_return_date'],
+      ),
       isReturned: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}is_returned'],
       )!,
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
     );
   }
 
@@ -1001,14 +1254,18 @@ class Loan extends DataClass implements Insertable<Loan> {
   final String borrowerName;
   final DateTime dateLoaned;
   final DateTime? dateReturned;
+  final DateTime? expectedReturnDate;
   final bool isReturned;
+  final String? notes;
   const Loan({
     required this.id,
     required this.itemId,
     required this.borrowerName,
     required this.dateLoaned,
     this.dateReturned,
+    this.expectedReturnDate,
     required this.isReturned,
+    this.notes,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -1020,7 +1277,13 @@ class Loan extends DataClass implements Insertable<Loan> {
     if (!nullToAbsent || dateReturned != null) {
       map['date_returned'] = Variable<DateTime>(dateReturned);
     }
+    if (!nullToAbsent || expectedReturnDate != null) {
+      map['expected_return_date'] = Variable<DateTime>(expectedReturnDate);
+    }
     map['is_returned'] = Variable<bool>(isReturned);
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
     return map;
   }
 
@@ -1033,7 +1296,13 @@ class Loan extends DataClass implements Insertable<Loan> {
       dateReturned: dateReturned == null && nullToAbsent
           ? const Value.absent()
           : Value(dateReturned),
+      expectedReturnDate: expectedReturnDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(expectedReturnDate),
       isReturned: Value(isReturned),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
     );
   }
 
@@ -1048,7 +1317,11 @@ class Loan extends DataClass implements Insertable<Loan> {
       borrowerName: serializer.fromJson<String>(json['borrowerName']),
       dateLoaned: serializer.fromJson<DateTime>(json['dateLoaned']),
       dateReturned: serializer.fromJson<DateTime?>(json['dateReturned']),
+      expectedReturnDate: serializer.fromJson<DateTime?>(
+        json['expectedReturnDate'],
+      ),
       isReturned: serializer.fromJson<bool>(json['isReturned']),
+      notes: serializer.fromJson<String?>(json['notes']),
     );
   }
   @override
@@ -1060,7 +1333,9 @@ class Loan extends DataClass implements Insertable<Loan> {
       'borrowerName': serializer.toJson<String>(borrowerName),
       'dateLoaned': serializer.toJson<DateTime>(dateLoaned),
       'dateReturned': serializer.toJson<DateTime?>(dateReturned),
+      'expectedReturnDate': serializer.toJson<DateTime?>(expectedReturnDate),
       'isReturned': serializer.toJson<bool>(isReturned),
+      'notes': serializer.toJson<String?>(notes),
     };
   }
 
@@ -1070,14 +1345,20 @@ class Loan extends DataClass implements Insertable<Loan> {
     String? borrowerName,
     DateTime? dateLoaned,
     Value<DateTime?> dateReturned = const Value.absent(),
+    Value<DateTime?> expectedReturnDate = const Value.absent(),
     bool? isReturned,
+    Value<String?> notes = const Value.absent(),
   }) => Loan(
     id: id ?? this.id,
     itemId: itemId ?? this.itemId,
     borrowerName: borrowerName ?? this.borrowerName,
     dateLoaned: dateLoaned ?? this.dateLoaned,
     dateReturned: dateReturned.present ? dateReturned.value : this.dateReturned,
+    expectedReturnDate: expectedReturnDate.present
+        ? expectedReturnDate.value
+        : this.expectedReturnDate,
     isReturned: isReturned ?? this.isReturned,
+    notes: notes.present ? notes.value : this.notes,
   );
   Loan copyWithCompanion(LoansCompanion data) {
     return Loan(
@@ -1092,9 +1373,13 @@ class Loan extends DataClass implements Insertable<Loan> {
       dateReturned: data.dateReturned.present
           ? data.dateReturned.value
           : this.dateReturned,
+      expectedReturnDate: data.expectedReturnDate.present
+          ? data.expectedReturnDate.value
+          : this.expectedReturnDate,
       isReturned: data.isReturned.present
           ? data.isReturned.value
           : this.isReturned,
+      notes: data.notes.present ? data.notes.value : this.notes,
     );
   }
 
@@ -1106,7 +1391,9 @@ class Loan extends DataClass implements Insertable<Loan> {
           ..write('borrowerName: $borrowerName, ')
           ..write('dateLoaned: $dateLoaned, ')
           ..write('dateReturned: $dateReturned, ')
-          ..write('isReturned: $isReturned')
+          ..write('expectedReturnDate: $expectedReturnDate, ')
+          ..write('isReturned: $isReturned, ')
+          ..write('notes: $notes')
           ..write(')'))
         .toString();
   }
@@ -1118,7 +1405,9 @@ class Loan extends DataClass implements Insertable<Loan> {
     borrowerName,
     dateLoaned,
     dateReturned,
+    expectedReturnDate,
     isReturned,
+    notes,
   );
   @override
   bool operator ==(Object other) =>
@@ -1129,7 +1418,9 @@ class Loan extends DataClass implements Insertable<Loan> {
           other.borrowerName == this.borrowerName &&
           other.dateLoaned == this.dateLoaned &&
           other.dateReturned == this.dateReturned &&
-          other.isReturned == this.isReturned);
+          other.expectedReturnDate == this.expectedReturnDate &&
+          other.isReturned == this.isReturned &&
+          other.notes == this.notes);
 }
 
 class LoansCompanion extends UpdateCompanion<Loan> {
@@ -1138,14 +1429,18 @@ class LoansCompanion extends UpdateCompanion<Loan> {
   final Value<String> borrowerName;
   final Value<DateTime> dateLoaned;
   final Value<DateTime?> dateReturned;
+  final Value<DateTime?> expectedReturnDate;
   final Value<bool> isReturned;
+  final Value<String?> notes;
   const LoansCompanion({
     this.id = const Value.absent(),
     this.itemId = const Value.absent(),
     this.borrowerName = const Value.absent(),
     this.dateLoaned = const Value.absent(),
     this.dateReturned = const Value.absent(),
+    this.expectedReturnDate = const Value.absent(),
     this.isReturned = const Value.absent(),
+    this.notes = const Value.absent(),
   });
   LoansCompanion.insert({
     this.id = const Value.absent(),
@@ -1153,7 +1448,9 @@ class LoansCompanion extends UpdateCompanion<Loan> {
     required String borrowerName,
     required DateTime dateLoaned,
     this.dateReturned = const Value.absent(),
+    this.expectedReturnDate = const Value.absent(),
     this.isReturned = const Value.absent(),
+    this.notes = const Value.absent(),
   }) : itemId = Value(itemId),
        borrowerName = Value(borrowerName),
        dateLoaned = Value(dateLoaned);
@@ -1163,7 +1460,9 @@ class LoansCompanion extends UpdateCompanion<Loan> {
     Expression<String>? borrowerName,
     Expression<DateTime>? dateLoaned,
     Expression<DateTime>? dateReturned,
+    Expression<DateTime>? expectedReturnDate,
     Expression<bool>? isReturned,
+    Expression<String>? notes,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -1171,7 +1470,10 @@ class LoansCompanion extends UpdateCompanion<Loan> {
       if (borrowerName != null) 'borrower_name': borrowerName,
       if (dateLoaned != null) 'date_loaned': dateLoaned,
       if (dateReturned != null) 'date_returned': dateReturned,
+      if (expectedReturnDate != null)
+        'expected_return_date': expectedReturnDate,
       if (isReturned != null) 'is_returned': isReturned,
+      if (notes != null) 'notes': notes,
     });
   }
 
@@ -1181,7 +1483,9 @@ class LoansCompanion extends UpdateCompanion<Loan> {
     Value<String>? borrowerName,
     Value<DateTime>? dateLoaned,
     Value<DateTime?>? dateReturned,
+    Value<DateTime?>? expectedReturnDate,
     Value<bool>? isReturned,
+    Value<String?>? notes,
   }) {
     return LoansCompanion(
       id: id ?? this.id,
@@ -1189,7 +1493,9 @@ class LoansCompanion extends UpdateCompanion<Loan> {
       borrowerName: borrowerName ?? this.borrowerName,
       dateLoaned: dateLoaned ?? this.dateLoaned,
       dateReturned: dateReturned ?? this.dateReturned,
+      expectedReturnDate: expectedReturnDate ?? this.expectedReturnDate,
       isReturned: isReturned ?? this.isReturned,
+      notes: notes ?? this.notes,
     );
   }
 
@@ -1211,8 +1517,16 @@ class LoansCompanion extends UpdateCompanion<Loan> {
     if (dateReturned.present) {
       map['date_returned'] = Variable<DateTime>(dateReturned.value);
     }
+    if (expectedReturnDate.present) {
+      map['expected_return_date'] = Variable<DateTime>(
+        expectedReturnDate.value,
+      );
+    }
     if (isReturned.present) {
       map['is_returned'] = Variable<bool>(isReturned.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
     }
     return map;
   }
@@ -1225,7 +1539,485 @@ class LoansCompanion extends UpdateCompanion<Loan> {
           ..write('borrowerName: $borrowerName, ')
           ..write('dateLoaned: $dateLoaned, ')
           ..write('dateReturned: $dateReturned, ')
-          ..write('isReturned: $isReturned')
+          ..write('expectedReturnDate: $expectedReturnDate, ')
+          ..write('isReturned: $isReturned, ')
+          ..write('notes: $notes')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $WardrobesTable extends Wardrobes
+    with TableInfo<$WardrobesTable, Wardrobe> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $WardrobesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+    'id',
+    aliasedName,
+    false,
+    hasAutoIncrement: true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'PRIMARY KEY AUTOINCREMENT',
+    ),
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(
+      minTextLength: 1,
+      maxTextLength: 50,
+    ),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _locationMeta = const VerificationMeta(
+    'location',
+  );
+  @override
+  late final GeneratedColumn<String> location = GeneratedColumn<String>(
+    'location',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _imageUrlMeta = const VerificationMeta(
+    'imageUrl',
+  );
+  @override
+  late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
+    'image_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _isFavouriteMeta = const VerificationMeta(
+    'isFavourite',
+  );
+  @override
+  late final GeneratedColumn<bool> isFavourite = GeneratedColumn<bool>(
+    'is_favourite',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_favourite" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _isAutoFavouritesMeta = const VerificationMeta(
+    'isAutoFavourites',
+  );
+  @override
+  late final GeneratedColumn<bool> isAutoFavourites = GeneratedColumn<bool>(
+    'is_auto_favourites',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_auto_favourites" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    name,
+    description,
+    location,
+    imageUrl,
+    isFavourite,
+    isAutoFavourites,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'wardrobes';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Wardrobe> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    }
+    if (data.containsKey('location')) {
+      context.handle(
+        _locationMeta,
+        location.isAcceptableOrUnknown(data['location']!, _locationMeta),
+      );
+    }
+    if (data.containsKey('image_url')) {
+      context.handle(
+        _imageUrlMeta,
+        imageUrl.isAcceptableOrUnknown(data['image_url']!, _imageUrlMeta),
+      );
+    }
+    if (data.containsKey('is_favourite')) {
+      context.handle(
+        _isFavouriteMeta,
+        isFavourite.isAcceptableOrUnknown(
+          data['is_favourite']!,
+          _isFavouriteMeta,
+        ),
+      );
+    }
+    if (data.containsKey('is_auto_favourites')) {
+      context.handle(
+        _isAutoFavouritesMeta,
+        isAutoFavourites.isAcceptableOrUnknown(
+          data['is_auto_favourites']!,
+          _isAutoFavouritesMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Wardrobe map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Wardrobe(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}id'],
+      )!,
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+      location: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}location'],
+      ),
+      imageUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}image_url'],
+      ),
+      isFavourite: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_favourite'],
+      )!,
+      isAutoFavourites: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_auto_favourites'],
+      )!,
+    );
+  }
+
+  @override
+  $WardrobesTable createAlias(String alias) {
+    return $WardrobesTable(attachedDatabase, alias);
+  }
+}
+
+class Wardrobe extends DataClass implements Insertable<Wardrobe> {
+  final int id;
+  final String name;
+  final String? description;
+  final String? location;
+  final String? imageUrl;
+  final bool isFavourite;
+  final bool isAutoFavourites;
+  const Wardrobe({
+    required this.id,
+    required this.name,
+    this.description,
+    this.location,
+    this.imageUrl,
+    required this.isFavourite,
+    required this.isAutoFavourites,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['name'] = Variable<String>(name);
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    if (!nullToAbsent || location != null) {
+      map['location'] = Variable<String>(location);
+    }
+    if (!nullToAbsent || imageUrl != null) {
+      map['image_url'] = Variable<String>(imageUrl);
+    }
+    map['is_favourite'] = Variable<bool>(isFavourite);
+    map['is_auto_favourites'] = Variable<bool>(isAutoFavourites);
+    return map;
+  }
+
+  WardrobesCompanion toCompanion(bool nullToAbsent) {
+    return WardrobesCompanion(
+      id: Value(id),
+      name: Value(name),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+      location: location == null && nullToAbsent
+          ? const Value.absent()
+          : Value(location),
+      imageUrl: imageUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(imageUrl),
+      isFavourite: Value(isFavourite),
+      isAutoFavourites: Value(isAutoFavourites),
+    );
+  }
+
+  factory Wardrobe.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Wardrobe(
+      id: serializer.fromJson<int>(json['id']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String?>(json['description']),
+      location: serializer.fromJson<String?>(json['location']),
+      imageUrl: serializer.fromJson<String?>(json['imageUrl']),
+      isFavourite: serializer.fromJson<bool>(json['isFavourite']),
+      isAutoFavourites: serializer.fromJson<bool>(json['isAutoFavourites']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String?>(description),
+      'location': serializer.toJson<String?>(location),
+      'imageUrl': serializer.toJson<String?>(imageUrl),
+      'isFavourite': serializer.toJson<bool>(isFavourite),
+      'isAutoFavourites': serializer.toJson<bool>(isAutoFavourites),
+    };
+  }
+
+  Wardrobe copyWith({
+    int? id,
+    String? name,
+    Value<String?> description = const Value.absent(),
+    Value<String?> location = const Value.absent(),
+    Value<String?> imageUrl = const Value.absent(),
+    bool? isFavourite,
+    bool? isAutoFavourites,
+  }) => Wardrobe(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    description: description.present ? description.value : this.description,
+    location: location.present ? location.value : this.location,
+    imageUrl: imageUrl.present ? imageUrl.value : this.imageUrl,
+    isFavourite: isFavourite ?? this.isFavourite,
+    isAutoFavourites: isAutoFavourites ?? this.isAutoFavourites,
+  );
+  Wardrobe copyWithCompanion(WardrobesCompanion data) {
+    return Wardrobe(
+      id: data.id.present ? data.id.value : this.id,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      location: data.location.present ? data.location.value : this.location,
+      imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
+      isFavourite: data.isFavourite.present
+          ? data.isFavourite.value
+          : this.isFavourite,
+      isAutoFavourites: data.isAutoFavourites.present
+          ? data.isAutoFavourites.value
+          : this.isAutoFavourites,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Wardrobe(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('location: $location, ')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('isFavourite: $isFavourite, ')
+          ..write('isAutoFavourites: $isAutoFavourites')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    name,
+    description,
+    location,
+    imageUrl,
+    isFavourite,
+    isAutoFavourites,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Wardrobe &&
+          other.id == this.id &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.location == this.location &&
+          other.imageUrl == this.imageUrl &&
+          other.isFavourite == this.isFavourite &&
+          other.isAutoFavourites == this.isAutoFavourites);
+}
+
+class WardrobesCompanion extends UpdateCompanion<Wardrobe> {
+  final Value<int> id;
+  final Value<String> name;
+  final Value<String?> description;
+  final Value<String?> location;
+  final Value<String?> imageUrl;
+  final Value<bool> isFavourite;
+  final Value<bool> isAutoFavourites;
+  const WardrobesCompanion({
+    this.id = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.location = const Value.absent(),
+    this.imageUrl = const Value.absent(),
+    this.isFavourite = const Value.absent(),
+    this.isAutoFavourites = const Value.absent(),
+  });
+  WardrobesCompanion.insert({
+    this.id = const Value.absent(),
+    required String name,
+    this.description = const Value.absent(),
+    this.location = const Value.absent(),
+    this.imageUrl = const Value.absent(),
+    this.isFavourite = const Value.absent(),
+    this.isAutoFavourites = const Value.absent(),
+  }) : name = Value(name);
+  static Insertable<Wardrobe> custom({
+    Expression<int>? id,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<String>? location,
+    Expression<String>? imageUrl,
+    Expression<bool>? isFavourite,
+    Expression<bool>? isAutoFavourites,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (location != null) 'location': location,
+      if (imageUrl != null) 'image_url': imageUrl,
+      if (isFavourite != null) 'is_favourite': isFavourite,
+      if (isAutoFavourites != null) 'is_auto_favourites': isAutoFavourites,
+    });
+  }
+
+  WardrobesCompanion copyWith({
+    Value<int>? id,
+    Value<String>? name,
+    Value<String?>? description,
+    Value<String?>? location,
+    Value<String?>? imageUrl,
+    Value<bool>? isFavourite,
+    Value<bool>? isAutoFavourites,
+  }) {
+    return WardrobesCompanion(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      location: location ?? this.location,
+      imageUrl: imageUrl ?? this.imageUrl,
+      isFavourite: isFavourite ?? this.isFavourite,
+      isAutoFavourites: isAutoFavourites ?? this.isAutoFavourites,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (location.present) {
+      map['location'] = Variable<String>(location.value);
+    }
+    if (imageUrl.present) {
+      map['image_url'] = Variable<String>(imageUrl.value);
+    }
+    if (isFavourite.present) {
+      map['is_favourite'] = Variable<bool>(isFavourite.value);
+    }
+    if (isAutoFavourites.present) {
+      map['is_auto_favourites'] = Variable<bool>(isAutoFavourites.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('WardrobesCompanion(')
+          ..write('id: $id, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('location: $location, ')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('isFavourite: $isFavourite, ')
+          ..write('isAutoFavourites: $isAutoFavourites')
           ..write(')'))
         .toString();
   }
@@ -1236,11 +2028,12 @@ abstract class _$ClosetDatabase extends GeneratedDatabase {
   $ClosetDatabaseManager get managers => $ClosetDatabaseManager(this);
   late final $ItemsTable items = $ItemsTable(this);
   late final $LoansTable loans = $LoansTable(this);
+  late final $WardrobesTable wardrobes = $WardrobesTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [items, loans];
+  List<DatabaseSchemaEntity> get allSchemaEntities => [items, loans, wardrobes];
 }
 
 typedef $$ItemsTableCreateCompanionBuilder =
@@ -1248,14 +2041,18 @@ typedef $$ItemsTableCreateCompanionBuilder =
       Value<int> id,
       required String name,
       required String type,
+      Value<String?> subType,
       Value<String?> colour,
+      Value<String?> secondaryColour,
       Value<String?> season,
       Value<String?> size,
       Value<String?> imagePath,
-      Value<bool> isFavorite,
-      Value<int?> wardrobeId,
       Value<String?> brand,
       Value<String?> description,
+      Value<bool> isFavourite,
+      Value<bool> isBorrowed,
+      Value<bool> isVisible,
+      Value<int?> wardrobeId,
       Value<String?> sleeveLength,
       Value<String?> fabricType,
       Value<String?> pattern,
@@ -1265,14 +2062,18 @@ typedef $$ItemsTableUpdateCompanionBuilder =
       Value<int> id,
       Value<String> name,
       Value<String> type,
+      Value<String?> subType,
       Value<String?> colour,
+      Value<String?> secondaryColour,
       Value<String?> season,
       Value<String?> size,
       Value<String?> imagePath,
-      Value<bool> isFavorite,
-      Value<int?> wardrobeId,
       Value<String?> brand,
       Value<String?> description,
+      Value<bool> isFavourite,
+      Value<bool> isBorrowed,
+      Value<bool> isVisible,
+      Value<int?> wardrobeId,
       Value<String?> sleeveLength,
       Value<String?> fabricType,
       Value<String?> pattern,
@@ -1326,8 +2127,18 @@ class $$ItemsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get subType => $composableBuilder(
+    column: $table.subType,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get colour => $composableBuilder(
     column: $table.colour,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get secondaryColour => $composableBuilder(
+    column: $table.secondaryColour,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1346,16 +2157,6 @@ class $$ItemsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<bool> get isFavorite => $composableBuilder(
-    column: $table.isFavorite,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get wardrobeId => $composableBuilder(
-    column: $table.wardrobeId,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<String> get brand => $composableBuilder(
     column: $table.brand,
     builder: (column) => ColumnFilters(column),
@@ -1363,6 +2164,26 @@ class $$ItemsTableFilterComposer
 
   ColumnFilters<String> get description => $composableBuilder(
     column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isFavourite => $composableBuilder(
+    column: $table.isFavourite,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isBorrowed => $composableBuilder(
+    column: $table.isBorrowed,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isVisible => $composableBuilder(
+    column: $table.isVisible,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get wardrobeId => $composableBuilder(
+    column: $table.wardrobeId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1431,8 +2252,18 @@ class $$ItemsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get subType => $composableBuilder(
+    column: $table.subType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get colour => $composableBuilder(
     column: $table.colour,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get secondaryColour => $composableBuilder(
+    column: $table.secondaryColour,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -1451,16 +2282,6 @@ class $$ItemsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<bool> get isFavorite => $composableBuilder(
-    column: $table.isFavorite,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get wardrobeId => $composableBuilder(
-    column: $table.wardrobeId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get brand => $composableBuilder(
     column: $table.brand,
     builder: (column) => ColumnOrderings(column),
@@ -1468,6 +2289,26 @@ class $$ItemsTableOrderingComposer
 
   ColumnOrderings<String> get description => $composableBuilder(
     column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isFavourite => $composableBuilder(
+    column: $table.isFavourite,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isBorrowed => $composableBuilder(
+    column: $table.isBorrowed,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isVisible => $composableBuilder(
+    column: $table.isVisible,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get wardrobeId => $composableBuilder(
+    column: $table.wardrobeId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -1505,8 +2346,16 @@ class $$ItemsTableAnnotationComposer
   GeneratedColumn<String> get type =>
       $composableBuilder(column: $table.type, builder: (column) => column);
 
+  GeneratedColumn<String> get subType =>
+      $composableBuilder(column: $table.subType, builder: (column) => column);
+
   GeneratedColumn<String> get colour =>
       $composableBuilder(column: $table.colour, builder: (column) => column);
+
+  GeneratedColumn<String> get secondaryColour => $composableBuilder(
+    column: $table.secondaryColour,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get season =>
       $composableBuilder(column: $table.season, builder: (column) => column);
@@ -1517,21 +2366,29 @@ class $$ItemsTableAnnotationComposer
   GeneratedColumn<String> get imagePath =>
       $composableBuilder(column: $table.imagePath, builder: (column) => column);
 
-  GeneratedColumn<bool> get isFavorite => $composableBuilder(
-    column: $table.isFavorite,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<int> get wardrobeId => $composableBuilder(
-    column: $table.wardrobeId,
-    builder: (column) => column,
-  );
-
   GeneratedColumn<String> get brand =>
       $composableBuilder(column: $table.brand, builder: (column) => column);
 
   GeneratedColumn<String> get description => $composableBuilder(
     column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isFavourite => $composableBuilder(
+    column: $table.isFavourite,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isBorrowed => $composableBuilder(
+    column: $table.isBorrowed,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isVisible =>
+      $composableBuilder(column: $table.isVisible, builder: (column) => column);
+
+  GeneratedColumn<int> get wardrobeId => $composableBuilder(
+    column: $table.wardrobeId,
     builder: (column) => column,
   );
 
@@ -1605,14 +2462,18 @@ class $$ItemsTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> type = const Value.absent(),
+                Value<String?> subType = const Value.absent(),
                 Value<String?> colour = const Value.absent(),
+                Value<String?> secondaryColour = const Value.absent(),
                 Value<String?> season = const Value.absent(),
                 Value<String?> size = const Value.absent(),
                 Value<String?> imagePath = const Value.absent(),
-                Value<bool> isFavorite = const Value.absent(),
-                Value<int?> wardrobeId = const Value.absent(),
                 Value<String?> brand = const Value.absent(),
                 Value<String?> description = const Value.absent(),
+                Value<bool> isFavourite = const Value.absent(),
+                Value<bool> isBorrowed = const Value.absent(),
+                Value<bool> isVisible = const Value.absent(),
+                Value<int?> wardrobeId = const Value.absent(),
                 Value<String?> sleeveLength = const Value.absent(),
                 Value<String?> fabricType = const Value.absent(),
                 Value<String?> pattern = const Value.absent(),
@@ -1620,14 +2481,18 @@ class $$ItemsTableTableManager
                 id: id,
                 name: name,
                 type: type,
+                subType: subType,
                 colour: colour,
+                secondaryColour: secondaryColour,
                 season: season,
                 size: size,
                 imagePath: imagePath,
-                isFavorite: isFavorite,
-                wardrobeId: wardrobeId,
                 brand: brand,
                 description: description,
+                isFavourite: isFavourite,
+                isBorrowed: isBorrowed,
+                isVisible: isVisible,
+                wardrobeId: wardrobeId,
                 sleeveLength: sleeveLength,
                 fabricType: fabricType,
                 pattern: pattern,
@@ -1637,14 +2502,18 @@ class $$ItemsTableTableManager
                 Value<int> id = const Value.absent(),
                 required String name,
                 required String type,
+                Value<String?> subType = const Value.absent(),
                 Value<String?> colour = const Value.absent(),
+                Value<String?> secondaryColour = const Value.absent(),
                 Value<String?> season = const Value.absent(),
                 Value<String?> size = const Value.absent(),
                 Value<String?> imagePath = const Value.absent(),
-                Value<bool> isFavorite = const Value.absent(),
-                Value<int?> wardrobeId = const Value.absent(),
                 Value<String?> brand = const Value.absent(),
                 Value<String?> description = const Value.absent(),
+                Value<bool> isFavourite = const Value.absent(),
+                Value<bool> isBorrowed = const Value.absent(),
+                Value<bool> isVisible = const Value.absent(),
+                Value<int?> wardrobeId = const Value.absent(),
                 Value<String?> sleeveLength = const Value.absent(),
                 Value<String?> fabricType = const Value.absent(),
                 Value<String?> pattern = const Value.absent(),
@@ -1652,14 +2521,18 @@ class $$ItemsTableTableManager
                 id: id,
                 name: name,
                 type: type,
+                subType: subType,
                 colour: colour,
+                secondaryColour: secondaryColour,
                 season: season,
                 size: size,
                 imagePath: imagePath,
-                isFavorite: isFavorite,
-                wardrobeId: wardrobeId,
                 brand: brand,
                 description: description,
+                isFavourite: isFavourite,
+                isBorrowed: isBorrowed,
+                isVisible: isVisible,
+                wardrobeId: wardrobeId,
                 sleeveLength: sleeveLength,
                 fabricType: fabricType,
                 pattern: pattern,
@@ -1718,7 +2591,9 @@ typedef $$LoansTableCreateCompanionBuilder =
       required String borrowerName,
       required DateTime dateLoaned,
       Value<DateTime?> dateReturned,
+      Value<DateTime?> expectedReturnDate,
       Value<bool> isReturned,
+      Value<String?> notes,
     });
 typedef $$LoansTableUpdateCompanionBuilder =
     LoansCompanion Function({
@@ -1727,7 +2602,9 @@ typedef $$LoansTableUpdateCompanionBuilder =
       Value<String> borrowerName,
       Value<DateTime> dateLoaned,
       Value<DateTime?> dateReturned,
+      Value<DateTime?> expectedReturnDate,
       Value<bool> isReturned,
+      Value<String?> notes,
     });
 
 final class $$LoansTableReferences
@@ -1781,8 +2658,18 @@ class $$LoansTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<DateTime> get expectedReturnDate => $composableBuilder(
+    column: $table.expectedReturnDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<bool> get isReturned => $composableBuilder(
     column: $table.isReturned,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get notes => $composableBuilder(
+    column: $table.notes,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1839,8 +2726,18 @@ class $$LoansTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get expectedReturnDate => $composableBuilder(
+    column: $table.expectedReturnDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<bool> get isReturned => $composableBuilder(
     column: $table.isReturned,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get notes => $composableBuilder(
+    column: $table.notes,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -1895,10 +2792,18 @@ class $$LoansTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<DateTime> get expectedReturnDate => $composableBuilder(
+    column: $table.expectedReturnDate,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<bool> get isReturned => $composableBuilder(
     column: $table.isReturned,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => column);
 
   $$ItemsTableAnnotationComposer get itemId {
     final $$ItemsTableAnnotationComposer composer = $composerBuilder(
@@ -1957,14 +2862,18 @@ class $$LoansTableTableManager
                 Value<String> borrowerName = const Value.absent(),
                 Value<DateTime> dateLoaned = const Value.absent(),
                 Value<DateTime?> dateReturned = const Value.absent(),
+                Value<DateTime?> expectedReturnDate = const Value.absent(),
                 Value<bool> isReturned = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
               }) => LoansCompanion(
                 id: id,
                 itemId: itemId,
                 borrowerName: borrowerName,
                 dateLoaned: dateLoaned,
                 dateReturned: dateReturned,
+                expectedReturnDate: expectedReturnDate,
                 isReturned: isReturned,
+                notes: notes,
               ),
           createCompanionCallback:
               ({
@@ -1973,14 +2882,18 @@ class $$LoansTableTableManager
                 required String borrowerName,
                 required DateTime dateLoaned,
                 Value<DateTime?> dateReturned = const Value.absent(),
+                Value<DateTime?> expectedReturnDate = const Value.absent(),
                 Value<bool> isReturned = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
               }) => LoansCompanion.insert(
                 id: id,
                 itemId: itemId,
                 borrowerName: borrowerName,
                 dateLoaned: dateLoaned,
                 dateReturned: dateReturned,
+                expectedReturnDate: expectedReturnDate,
                 isReturned: isReturned,
+                notes: notes,
               ),
           withReferenceMapper: (p0) => p0
               .map(
@@ -2047,6 +2960,241 @@ typedef $$LoansTableProcessedTableManager =
       Loan,
       PrefetchHooks Function({bool itemId})
     >;
+typedef $$WardrobesTableCreateCompanionBuilder =
+    WardrobesCompanion Function({
+      Value<int> id,
+      required String name,
+      Value<String?> description,
+      Value<String?> location,
+      Value<String?> imageUrl,
+      Value<bool> isFavourite,
+      Value<bool> isAutoFavourites,
+    });
+typedef $$WardrobesTableUpdateCompanionBuilder =
+    WardrobesCompanion Function({
+      Value<int> id,
+      Value<String> name,
+      Value<String?> description,
+      Value<String?> location,
+      Value<String?> imageUrl,
+      Value<bool> isFavourite,
+      Value<bool> isAutoFavourites,
+    });
+
+class $$WardrobesTableFilterComposer
+    extends Composer<_$ClosetDatabase, $WardrobesTable> {
+  $$WardrobesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get location => $composableBuilder(
+    column: $table.location,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get imageUrl => $composableBuilder(
+    column: $table.imageUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isFavourite => $composableBuilder(
+    column: $table.isFavourite,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isAutoFavourites => $composableBuilder(
+    column: $table.isAutoFavourites,
+    builder: (column) => ColumnFilters(column),
+  );
+}
+
+class $$WardrobesTableOrderingComposer
+    extends Composer<_$ClosetDatabase, $WardrobesTable> {
+  $$WardrobesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<int> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get location => $composableBuilder(
+    column: $table.location,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get imageUrl => $composableBuilder(
+    column: $table.imageUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isFavourite => $composableBuilder(
+    column: $table.isFavourite,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isAutoFavourites => $composableBuilder(
+    column: $table.isAutoFavourites,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$WardrobesTableAnnotationComposer
+    extends Composer<_$ClosetDatabase, $WardrobesTable> {
+  $$WardrobesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<int> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get location =>
+      $composableBuilder(column: $table.location, builder: (column) => column);
+
+  GeneratedColumn<String> get imageUrl =>
+      $composableBuilder(column: $table.imageUrl, builder: (column) => column);
+
+  GeneratedColumn<bool> get isFavourite => $composableBuilder(
+    column: $table.isFavourite,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isAutoFavourites => $composableBuilder(
+    column: $table.isAutoFavourites,
+    builder: (column) => column,
+  );
+}
+
+class $$WardrobesTableTableManager
+    extends
+        RootTableManager<
+          _$ClosetDatabase,
+          $WardrobesTable,
+          Wardrobe,
+          $$WardrobesTableFilterComposer,
+          $$WardrobesTableOrderingComposer,
+          $$WardrobesTableAnnotationComposer,
+          $$WardrobesTableCreateCompanionBuilder,
+          $$WardrobesTableUpdateCompanionBuilder,
+          (
+            Wardrobe,
+            BaseReferences<_$ClosetDatabase, $WardrobesTable, Wardrobe>,
+          ),
+          Wardrobe,
+          PrefetchHooks Function()
+        > {
+  $$WardrobesTableTableManager(_$ClosetDatabase db, $WardrobesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$WardrobesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$WardrobesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$WardrobesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String?> description = const Value.absent(),
+                Value<String?> location = const Value.absent(),
+                Value<String?> imageUrl = const Value.absent(),
+                Value<bool> isFavourite = const Value.absent(),
+                Value<bool> isAutoFavourites = const Value.absent(),
+              }) => WardrobesCompanion(
+                id: id,
+                name: name,
+                description: description,
+                location: location,
+                imageUrl: imageUrl,
+                isFavourite: isFavourite,
+                isAutoFavourites: isAutoFavourites,
+              ),
+          createCompanionCallback:
+              ({
+                Value<int> id = const Value.absent(),
+                required String name,
+                Value<String?> description = const Value.absent(),
+                Value<String?> location = const Value.absent(),
+                Value<String?> imageUrl = const Value.absent(),
+                Value<bool> isFavourite = const Value.absent(),
+                Value<bool> isAutoFavourites = const Value.absent(),
+              }) => WardrobesCompanion.insert(
+                id: id,
+                name: name,
+                description: description,
+                location: location,
+                imageUrl: imageUrl,
+                isFavourite: isFavourite,
+                isAutoFavourites: isAutoFavourites,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .toList(),
+          prefetchHooksCallback: null,
+        ),
+      );
+}
+
+typedef $$WardrobesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$ClosetDatabase,
+      $WardrobesTable,
+      Wardrobe,
+      $$WardrobesTableFilterComposer,
+      $$WardrobesTableOrderingComposer,
+      $$WardrobesTableAnnotationComposer,
+      $$WardrobesTableCreateCompanionBuilder,
+      $$WardrobesTableUpdateCompanionBuilder,
+      (Wardrobe, BaseReferences<_$ClosetDatabase, $WardrobesTable, Wardrobe>),
+      Wardrobe,
+      PrefetchHooks Function()
+    >;
 
 class $ClosetDatabaseManager {
   final _$ClosetDatabase _db;
@@ -2055,4 +3203,6 @@ class $ClosetDatabaseManager {
       $$ItemsTableTableManager(_db, _db.items);
   $$LoansTableTableManager get loans =>
       $$LoansTableTableManager(_db, _db.loans);
+  $$WardrobesTableTableManager get wardrobes =>
+      $$WardrobesTableTableManager(_db, _db.wardrobes);
 }

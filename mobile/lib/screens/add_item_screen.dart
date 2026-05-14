@@ -7,131 +7,8 @@ import 'package:mobile/models/item_model.dart';
 import 'package:mobile/services/gemini_service.dart';
 import 'package:mobile/services/closet_database.dart';
 import 'package:mobile/utils/app_colors.dart';
-
-// ── Enum data ────────────────────────────────────────────────────────────────
-
-const List<String> _types = [
-  'Shirt',
-  'Pant',
-  'Dress',
-  'Jacket',
-  'Skirt',
-  'Jumper',
-  'Swimsuit',
-  'Footwear',
-  'Accessory',
-];
-
-const List<String> _colours = [
-  'BLACK',
-  'WHITE',
-  'GREY',
-  'CHARCOAL',
-  'IVORY',
-  'CREAM',
-  'BEIGE',
-  'SAND',
-  'BROWN',
-  'KHAKI',
-  'OLIVE',
-  'COPPER',
-  'RED',
-  'MAROON',
-  'BURGUNDY',
-  'CORAL',
-  'PINK',
-  'BLUSH',
-  'ROSE',
-  'FUCHSIA',
-  'MAGENTA',
-  'ORANGE',
-  'AMBER',
-  'GOLD',
-  'MUSTARD',
-  'YELLOW',
-  'PEACH',
-  'LIME',
-  'GREEN',
-  'MINT',
-  'TEAL',
-  'EMERALD',
-  'BLUE',
-  'NAVY_BLUE',
-  'COBALT',
-  'INDIGO',
-  'CYAN',
-  'TURQUOISE',
-  'PURPLE',
-  'LAVENDER',
-  'LILAC',
-  'SILVER',
-];
-
-const Map<String, Color> _colourSwatches = {
-  'BLACK': Color(0xFF212121),
-  'WHITE': Color(0xFFFAFAFA),
-  'GREY': Color(0xFF9E9E9E),
-  'CHARCOAL': Color(0xFF37474F),
-  'IVORY': Color(0xFFFFF8E7),
-  'CREAM': Color(0xFFFFFDD0),
-  'BEIGE': Color(0xFFF5F5DC),
-  'SAND': Color(0xFFC2B280),
-  'BROWN': Color(0xFF795548),
-  'KHAKI': Color(0xFFC3B091),
-  'OLIVE': Color(0xFF6B6B2A),
-  'COPPER': Color(0xFFB87333),
-  'RED': Color(0xFFE53935),
-  'MAROON': Color(0xFF800000),
-  'BURGUNDY': Color(0xFF722F37),
-  'CORAL': Color(0xFFFF7F7F),
-  'PINK': Color(0xFFF48FB1),
-  'BLUSH': Color(0xFFDE5D83),
-  'ROSE': Color(0xFFFF4081),
-  'FUCHSIA': Color(0xFFFF00FF),
-  'MAGENTA': Color(0xFFE91E63),
-  'ORANGE': Color(0xFFFF7043),
-  'AMBER': Color(0xFFFFC107),
-  'GOLD': Color(0xFFFFD700),
-  'MUSTARD': Color(0xFFFFDB58),
-  'YELLOW': Color(0xFFFFEE58),
-  'PEACH': Color(0xFFFFDAB9),
-  'LIME': Color(0xFFCDDC39),
-  'GREEN': Color(0xFF43A047),
-  'MINT': Color(0xFF80CBC4),
-  'TEAL': Color(0xFF00897B),
-  'EMERALD': Color(0xFF50C878),
-  'BLUE': Color(0xFF1E88E5),
-  'NAVY_BLUE': Color(0xFF1A237E),
-  'COBALT': Color(0xFF0047AB),
-  'INDIGO': Color(0xFF3F51B5),
-  'CYAN': Color(0xFF00BCD4),
-  'TURQUOISE': Color(0xFF40E0D0),
-  'PURPLE': Color(0xFF8E24AA),
-  'LAVENDER': Color(0xFFE1BEE7),
-  'LILAC': Color(0xFFC8A2C8),
-  'SILVER': Color(0xFFC0C0C0),
-};
-
-const List<String> _seasons = [
-  'SPRING',
-  'SUMMER',
-  'AUTUMN',
-  'WINTER',
-  'ALL_SEASONS',
-];
-const List<String> _sizes = [
-  'XS',
-  'S',
-  'M',
-  'L',
-  'XL',
-  'XXL',
-  'XXXL',
-  'ONE_SIZE',
-  'CUSTOM',
-];
-const List<String> _sleeveLengths = ['SHORT', 'MEDIUM', 'LONG'];
-const Set<String> _typesWithSleeves = {'Shirt', 'Dress', 'Jumper', 'Jacket'};
+import 'package:mobile/utils/closet_constants.dart';
+import 'package:mobile/widgets/app_feedback.dart';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -164,11 +41,14 @@ class _AddItemScreenState extends State<AddItemScreen> {
   final _fabricController = TextEditingController();
   final _patternController = TextEditingController();
   final _colourFieldKey = GlobalKey<FormFieldState<String?>>();
+  final _secondaryColourFieldKey = GlobalKey<FormFieldState<String?>>();
   final _sizeFieldKey = GlobalKey<FormFieldState<String?>>();
 
   File? _image;
-  String _type = 'Shirt';
+  String _type = 'CLOTHES';
+  String? _subType;
   String? _colour;
+  String? _secondaryColour;
   String? _season;
   String? _size;
   String? _sleeveLength;
@@ -262,18 +142,32 @@ class _AddItemScreenState extends State<AddItemScreen> {
         if (analysis.name?.isNotEmpty == true) {
           _nameController.text = analysis.name!;
         }
-        if (analysis.type != null && _types.contains(analysis.type)) {
-          _type = analysis.type!;
+
+        if (analysis.type != null) {
+          final upperType = analysis.type!.toUpperCase();
+          bool found = false;
+          ClosetConstants.subTypes.forEach((key, values) {
+            if (values.contains(upperType)) {
+              _type = key;
+              _subType = upperType;
+              found = true;
+            }
+          });
+          if (!found) {
+            // fallback logic or ignore
+          }
         }
-        if (analysis.colour != null && _colours.contains(analysis.colour)) {
+        if (analysis.colour != null &&
+            ClosetConstants.colourPalette.containsKey(analysis.colour)) {
           _colour = analysis.colour;
           _colourFieldKey.currentState?.didChange(_colour);
         }
-        if (analysis.season != null && _seasons.contains(analysis.season)) {
+        if (analysis.season != null &&
+            ClosetConstants.seasons.contains(analysis.season)) {
           _season = analysis.season;
         }
         if (analysis.sleeveLength != null &&
-            _sleeveLengths.contains(analysis.sleeveLength)) {
+            ClosetConstants.sleeveLengths.contains(analysis.sleeveLength)) {
           _sleeveLength = analysis.sleeveLength;
         }
         if (analysis.fabricType?.isNotEmpty == true) {
@@ -286,17 +180,13 @@ class _AddItemScreenState extends State<AddItemScreen> {
           _descriptionController.text = analysis.description!;
         }
       });
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Fields filled in — review and adjust as needed'),
-          backgroundColor: AppColors.success,
-        ),
+      AppFeedback.success(
+        context,
+        'Fields filled in — review and adjust as needed',
       );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString()), backgroundColor: AppColors.error),
-      );
+      AppFeedback.error(context, e.toString());
     } finally {
       if (mounted) setState(() => _isAnalyzing = false);
     }
@@ -310,11 +200,13 @@ class _AddItemScreenState extends State<AddItemScreen> {
       final model = ItemModel(
         name: _nameController.text.trim(),
         type: _type,
+        subType: _subType,
         colour: _colour,
+        secondaryColour: _secondaryColour,
         season: _season,
         size: _size,
         imagePath: _image?.path,
-        isFavorite: _isFavourite,
+        isFavourite: _isFavourite,
         brand: _brandController.text.trim().isEmpty
             ? null
             : _brandController.text.trim(),
@@ -333,12 +225,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
       if (mounted) Navigator.pop(context, true);
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error saving: $e'),
-            backgroundColor: AppColors.error,
-          ),
-        );
+        AppFeedback.error(context, 'Could not save item. Please try again.');
       }
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -389,6 +276,8 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 const SizedBox(height: 12),
                 _buildTypeSelector(),
                 const SizedBox(height: 12),
+                _buildSubTypeSelector(),
+                const SizedBox(height: 12),
                 _buildTextField(
                   _brandController,
                   'Brand',
@@ -397,14 +286,28 @@ class _AddItemScreenState extends State<AddItemScreen> {
               ]),
               const SizedBox(height: 16),
               _buildSection('Appearance', [
-                _buildColourDropdown(),
+                _buildColourDropdown(
+                  'Main Colour',
+                  _colourFieldKey,
+                  _colour,
+                  (v) => setState(() => _colour = v),
+                ),
+                const SizedBox(height: 12),
+                _buildColourDropdown(
+                  'Secondary Colour',
+                  _secondaryColourFieldKey,
+                  _secondaryColour,
+                  (v) => setState(() => _secondaryColour = v),
+                ),
                 const SizedBox(height: 12),
                 _buildSizeDropdown(),
                 const SizedBox(height: 16),
                 _buildLabel('Season'),
                 const SizedBox(height: 8),
                 _buildSeasonChips(),
-                if (_typesWithSleeves.contains(_type)) ...[
+                if (_type == 'CLOTHES' &&
+                    _subType != null &&
+                    ClosetConstants.typesWithSleeves.contains(_subType)) ...[
                   const SizedBox(height: 16),
                   _buildLabel('Sleeve length'),
                   const SizedBox(height: 8),
@@ -642,19 +545,19 @@ class _AddItemScreenState extends State<AddItemScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildLabel('Type'),
+        _buildLabel('Category'),
         const SizedBox(height: 8),
         Wrap(
           spacing: 8,
           runSpacing: 6,
-          children: _types.map((t) {
+          children: ClosetConstants.types.map((t) {
             final selected = _type == t;
             return ChoiceChip(
-              label: Text(t),
+              label: Text(_fmt(t)),
               selected: selected,
               onSelected: (_) => setState(() {
                 _type = t;
-                if (!_typesWithSleeves.contains(t)) _sleeveLength = null;
+                _subType = null; // reset subType when main type changes
               }),
               selectedColor: AppColors.primaryLight.withValues(alpha: 0.35),
               labelStyle: TextStyle(
@@ -668,19 +571,60 @@ class _AddItemScreenState extends State<AddItemScreen> {
     );
   }
 
-  Widget _buildColourDropdown() {
+  Widget _buildSubTypeSelector() {
+    final subTypes = ClosetConstants.subTypes[_type] ?? [];
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildLabel('Sub-type'),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 6,
+          children: subTypes.map((st) {
+            final selected = _subType == st;
+            return ChoiceChip(
+              label: Text(_fmt(st)),
+              selected: selected,
+              onSelected: (_) => setState(() {
+                _subType = st;
+                if (!ClosetConstants.typesWithSleeves.contains(st)) {
+                  _sleeveLength = null;
+                }
+              }),
+              selectedColor: AppColors.primaryLight.withValues(alpha: 0.35),
+              labelStyle: TextStyle(
+                color: selected ? AppColors.primary : AppColors.textSecondary,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            );
+          }).toList(),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildColourDropdown(
+    String label,
+    Key fieldKey,
+    String? value,
+    ValueChanged<String?> onChanged,
+  ) {
     return DropdownButtonFormField<String>(
-      key: _colourFieldKey,
-      initialValue: _colour,
-      decoration: const InputDecoration(
-        labelText: 'Colour',
-        border: OutlineInputBorder(),
+      key: fieldKey,
+      initialValue: value,
+      decoration: InputDecoration(
+        labelText: label,
+        border: const OutlineInputBorder(),
       ),
-      hint: const Text('Select colour'),
+      hint: Text('Select $label'),
       isExpanded: true,
-      items: _colours.map((c) {
-        final swatch = _colourSwatches[c] ?? Colors.grey;
+      items: ClosetConstants.colourPalette.keys.map((c) {
+        final swatch = ClosetConstants.colourPalette[c] ?? Colors.grey;
         final isLight = swatch.computeLuminance() > 0.7;
+        final isSpecial =
+            c == 'MULTICOLOUR' || c == 'PATTERNED' || c == 'ANIMAL_PRINT';
+
         return DropdownMenuItem(
           value: c,
           child: Row(
@@ -689,7 +633,18 @@ class _AddItemScreenState extends State<AddItemScreen> {
                 width: 20,
                 height: 20,
                 decoration: BoxDecoration(
-                  color: swatch,
+                  color: isSpecial ? null : swatch,
+                  gradient: isSpecial
+                      ? const SweepGradient(
+                          colors: [
+                            Colors.red,
+                            Colors.yellow,
+                            Colors.green,
+                            Colors.blue,
+                            Colors.red,
+                          ],
+                        )
+                      : null,
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: isLight ? AppColors.greyMedium : Colors.transparent,
@@ -702,7 +657,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
           ),
         );
       }).toList(),
-      onChanged: (v) => setState(() => _colour = v),
+      onChanged: onChanged,
     );
   }
 
@@ -715,7 +670,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
         border: OutlineInputBorder(),
       ),
       hint: const Text('Select size'),
-      items: _sizes
+      items: ClosetConstants.sizes
           .map((s) => DropdownMenuItem(value: s, child: Text(_fmt(s))))
           .toList(),
       onChanged: (v) => setState(() => _size = v),
@@ -726,7 +681,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
     return Wrap(
       spacing: 8,
       runSpacing: 6,
-      children: _seasons.map((s) {
+      children: ClosetConstants.seasons.map((s) {
         final selected = _season == s;
         return ChoiceChip(
           label: Text(_fmt(s)),
@@ -745,7 +700,7 @@ class _AddItemScreenState extends State<AddItemScreen> {
   Widget _buildSleeveLengthChips() {
     return Wrap(
       spacing: 8,
-      children: _sleeveLengths.map((s) {
+      children: ClosetConstants.sleeveLengths.map((s) {
         final selected = _sleeveLength == s;
         return ChoiceChip(
           label: Text(_fmt(s)),

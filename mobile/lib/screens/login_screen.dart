@@ -4,6 +4,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:mobile/screens/register_screen.dart';
 import 'package:mobile/utils/app_colors.dart';
+import 'package:mobile/widgets/app_feedback.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -76,11 +77,9 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Password reset email sent — check your inbox'),
-          backgroundColor: AppColors.success,
-        ),
+      AppFeedback.success(
+        context,
+        'Password reset email sent — check your inbox',
       );
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
@@ -88,11 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: AppColors.error),
-    );
-  }
+  void _showError(String message) => AppFeedback.error(context, message);
 
   String _authErrorMessage(String code) {
     return switch (code) {

@@ -9,12 +9,16 @@ void main() {
       final entity = Item(
         id: 1,
         name: 'Test Shirt',
-        type: 'Shirt',
+        type: 'CLOTHES',
+        subType: 'SHIRT',
         colour: 'Blue',
+        secondaryColour: 'White',
         season: 'Summer',
         size: 'M',
         imagePath: 'path/to/image',
-        isFavorite: true,
+        isFavourite: true,
+        isBorrowed: false,
+        isVisible: true,
         wardrobeId: 10,
       );
 
@@ -22,33 +26,34 @@ void main() {
 
       expect(model.id, 1);
       expect(model.name, 'Test Shirt');
-      expect(model.type, 'Shirt');
+      expect(model.type, 'CLOTHES');
+      expect(model.subType, 'SHIRT');
       expect(model.colour, 'Blue');
+      expect(model.secondaryColour, 'White');
       expect(model.season, 'Summer');
       expect(model.size, 'M');
       expect(model.imagePath, 'path/to/image');
-      expect(model.isFavorite, true);
+      expect(model.isFavourite, true);
+      expect(model.isBorrowed, false);
+      expect(model.isVisible, true);
       expect(model.wardrobeId, 10);
     });
 
     test('toCompanion should correctly map ItemModel to ItemsCompanion', () {
       final model = ItemModel(
         name: 'New Item',
-        type: 'Pants',
+        type: 'CLOTHES',
         colour: 'Black',
-        isFavorite: false,
+        isFavourite: false,
       );
 
       final companion = model.toCompanion();
 
       expect(companion.name.value, 'New Item');
-      expect(companion.type.value, 'Pants');
+      expect(companion.type.value, 'CLOTHES');
       expect(companion.colour.value, 'Black');
-      expect(companion.isFavorite.value, false);
-      expect(
-        companion.id,
-        isA<Value<int>>(),
-      ); // Auto-increment so it's absent or default
+      expect(companion.isFavourite.value, false);
+      expect(companion.id, isA<Value<int>>());
     });
   });
 }

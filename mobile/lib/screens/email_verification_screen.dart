@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:mobile/utils/app_colors.dart';
 import 'package:mobile/utils/glass_container.dart';
 import 'package:mobile/viewmodels/auth_viewmodel.dart';
+import 'package:mobile/widgets/app_feedback.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});
@@ -55,11 +56,9 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
       await context.read<AuthViewModel>().sendVerificationEmail();
       if (!mounted) return;
       setState(() => _resentRecently = true);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Verification email sent — check your inbox'),
-          backgroundColor: AppColors.success,
-        ),
+      AppFeedback.success(
+        context,
+        'Verification email sent — check your inbox',
       );
       // Allow resend again after 30 seconds
       Future.delayed(const Duration(seconds: 30), () {
@@ -67,12 +66,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen>
       });
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Could not send email. Try again later.'),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      AppFeedback.error(context, 'Could not send email. Try again later.');
     } finally {
       if (mounted) setState(() => _isResending = false);
     }

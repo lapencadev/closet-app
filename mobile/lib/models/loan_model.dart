@@ -7,7 +7,9 @@ class LoanModel {
   final String borrowerName;
   final DateTime dateLoaned;
   final DateTime? dateReturned;
+  final DateTime? expectedReturnDate;
   final bool isReturned;
+  final String? notes;
 
   LoanModel({
     this.id,
@@ -15,7 +17,9 @@ class LoanModel {
     required this.borrowerName,
     required this.dateLoaned,
     this.dateReturned,
+    this.expectedReturnDate,
     this.isReturned = false,
+    this.notes,
   });
 
   factory LoanModel.fromEntity(Loan entity) {
@@ -25,7 +29,9 @@ class LoanModel {
       borrowerName: entity.borrowerName,
       dateLoaned: entity.dateLoaned,
       dateReturned: entity.dateReturned,
+      expectedReturnDate: entity.expectedReturnDate,
       isReturned: entity.isReturned,
+      notes: entity.notes,
     );
   }
 
@@ -35,7 +41,9 @@ class LoanModel {
       borrowerName: borrowerName,
       dateLoaned: dateLoaned,
       dateReturned: Value(dateReturned),
+      expectedReturnDate: Value(expectedReturnDate),
       isReturned: Value(isReturned),
+      notes: Value(notes),
     );
   }
 }

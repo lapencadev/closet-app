@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:mobile/utils/app_colors.dart';
+import 'package:mobile/widgets/app_feedback.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -43,12 +44,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await credential.user?.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(_authErrorMessage(e.code)),
-          backgroundColor: AppColors.error,
-        ),
-      );
+      AppFeedback.error(context, _authErrorMessage(e.code));
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
