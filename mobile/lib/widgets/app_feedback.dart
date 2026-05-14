@@ -150,9 +150,9 @@ class ConfirmDialog {
           ),
           PlatformDialogAction(
             onPressed: () => Navigator.of(ctx).pop(true),
-            cupertino: (_, __) =>
+            cupertino: (_, _) =>
                 CupertinoDialogActionData(isDestructiveAction: isDestructive),
-            material: (_, __) => MaterialDialogActionData(
+            material: (_, _) => MaterialDialogActionData(
               style: isDestructive
                   ? TextButton.styleFrom(foregroundColor: AppColors.error)
                   : null,
